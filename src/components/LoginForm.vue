@@ -21,7 +21,7 @@ const Prefix = ref('@unsam.edu.ar')
               <template v-slot:append-inner="{  }">
                 <v-btn
                   icon="mdi-at"
-                  size="x-small"
+                  size="xx-small"
                   id="test"
                 >
                 </v-btn>
