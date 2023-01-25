@@ -1,9 +1,12 @@
 
 <script setup>
+import ConcursoContainer from '../components/concurso/ConcursoContainer.vue'
+
 </script>
 
 <template>
-  <div>concursos</div>
+  
+  <ConcursoContainer />
 </template>
 
 <style>

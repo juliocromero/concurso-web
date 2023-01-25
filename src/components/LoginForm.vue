@@ -7,8 +7,8 @@ const Prefix = ref('@unsam.edu.ar')
 </script>
 <template>
   <v-row>
-    <v-col md="7" col="12" class="card_form">
-      <v-card rounded="0">
+    <v-col md="6" col="12" class="card_form">
+      <v-card rounded="0" height="350px">
         <v-card-text class="text-h5 py-2">
           <v-form ref="form" lazy-validation>
             <v-text-field
@@ -53,7 +53,7 @@ const Prefix = ref('@unsam.edu.ar')
         </v-card-actions>
       </v-card>
     </v-col>
-    <v-col md="5" cols="12">
+    <v-col md="6" cols="12">
       <div class="pa-4 d-flex flex-column justify-space-between register_form">
         <div>
           <h3>

@@ -18,7 +18,7 @@ const itemsNav = ref([
     <v-layout>
       <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
 
-      <v-app-bar prominent>
+     <!--  <v-app-bar prominent>
         <v-app-bar-nav-icon
           variant="text"
           @click.stop="drawer = !drawer"
@@ -33,7 +33,7 @@ const itemsNav = ref([
 
       <v-navigation-drawer v-model="drawer" location="left" temporary>
         <v-list :items="itemsNav" class="mt-7"></v-list>
-      </v-navigation-drawer>
+      </v-navigation-drawer> -->
 
       <v-main class="mt-22" height="100vh">
         <v-list class="background-bran pb-0 pt-0 d-flex justify-end">
