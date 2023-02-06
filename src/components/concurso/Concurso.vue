@@ -1,41 +1,51 @@
 <script setup>
 import { ref } from "vue";
-import FormConcurso from "./FormConcurso.vue";
+import { useRouter } from "vue-router";
 import LoginForm from "./LoginForm.vue";
-
+import Block from '../../assets/icons/Block.vue'
+import Canvas from '../../assets/icons/Canvas.vue'
 const { items } = defineProps({
   items: Object,
 });
-const emit = defineEmits(['noRegister'])
+const emit = defineEmits(["noRegister"]);
 const expand = ref(false);
 const descriptionExpand = ref(false);
 const modalInscription = ref(false);
 
-const noRegister = (res) => {
-  emit('noRegister')
+const { push } = useRouter();
+
+const loginIn = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    push(`/concursos/${items.id}`, { name: "asdasd" });
+  } else {
+    emit("noRegister");
+  }
 };
+const active = ref(false);
 </script>
 
 <template>
-  <v-card class="mx-auto" width="75%">
-    <v-card-item :title="items.title"> </v-card-item>
+  <div class="canvas-cupo">
+    <Canvas fill="#2C88CD" />
+  </div>
+  <v-card class="mx-auto d-flex flex-column" width="300px" height="250px">
+    <v-card-item :title="items.name"> </v-card-item>
 
     <v-card-text class="py-0">
-      <div class="concurso__description" v-if="!items.active">
-        {{ items.description }}
+      <div>
+        {{ items.descripcion }}
       </div>
-      <v-expand-transition>
-        <div v-if="items.active">
-          {{ items.description }}
-        </div>
-      </v-expand-transition>
+      <div class="pt-4">
+        <Block />
+      </div>
 
       <div
         class="w-100 d-flex justify-end"
-        v-if="items.description.length > 200"
+        v-if="items.descripcion.length > 200"
       >
-        <v-btn variant="text" @click="items.active = !items.active">{{
-          items.active ? "ver menos" : "ver mas"
+        <v-btn variant="text" @click="active = !active">{{
+          active ? "ver menos" : "ver mas"
         }}</v-btn>
       </div>
     </v-card-text>
@@ -43,7 +53,9 @@ const noRegister = (res) => {
     <v-divider></v-divider>
 
     <v-card-actions>
-      <FormConcurso :title="items.title" @noRegister="noRegister" />
+      <v-btn block variant="flat" color="success" @click="loginIn()"
+        >Inscribirse</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -57,5 +69,15 @@ const noRegister = (res) => {
 }
 .concurso__ver-mas {
   width: 100%;
+}
+.canvas-cupo{
+  position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    text-align: end;
+    padding: 8px 20px;
 }
 </style>

@@ -6,5 +6,8 @@
 }
 
 .background-grey {
-    background-color: rgb(185, 185, 185) !important;
+    background-color: rgb(151, 193, 221) !important;
+}
+html{
+    height: 100%;
 }

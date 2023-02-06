@@ -77,7 +77,7 @@ const Prefix = ref('@unsam.edu.ar')
   background: blue;
 }
 .register_form {
-  height: 100%;
+  height: 100vh;
 }
 </style>
 <style>

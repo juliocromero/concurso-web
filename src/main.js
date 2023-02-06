@@ -23,7 +23,18 @@ const router = createRouter({
   });
 
 const app = createApp(App);
-
+router.beforeEach((to, from, next) => {
+  if(to.name == 'concursos'){
+    const token = localStorage.getItem("token");
+    if(token){
+      next()
+    }else{
+      next('/concursos');
+    }
+  }else {
+    next()
+  }
+})
 app.use(router);
 app.use(vuetify);
 

@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, onUpdated, ref, watch, render } from "vue";
-import FormConcurso from "./FormConcurso.vue";
 import logo from "../../assets/logo.png";
 
 const isLogin = defineProps({ isLogin: Boolean });
@@ -23,7 +22,6 @@ const close = () => {
 
 const loginIn = () => {
   window.localStorage.setItem('token', 'asdasdasd')
-  emit('loginIn')
   emit("closeLogin", false);
 };
 </script>
@@ -93,4 +91,9 @@ const loginIn = () => {
   </v-dialog>
 </template>
 
-<style></style>
+<style>
+.register_form{
+  
+
+}
+</style>
