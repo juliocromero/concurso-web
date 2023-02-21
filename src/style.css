@@ -1,3 +1,7 @@
+*:root{
+    --color-brand: #b1b1b1;
+}
+
 .background-bran{
     background-color: #2C88CD !important;
 }

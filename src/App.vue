@@ -4,7 +4,6 @@ import { RouterLink, RouterView, useRoute } from "vue-router";
 
 const {name} = useRoute()
 
-console.log(name)
 const drawer = ref(false);
 const itemsNav = ref([
   { title: "Institucional", value: 1 },

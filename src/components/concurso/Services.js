@@ -60,4 +60,26 @@ const postInscription = async (user) => {
     });
   return response;
 };
-export { getConcursos, getConcursoOne, postInscription };
+
+const getNominas = async (id) => {
+  const response = await fetch(URL + `concurso/status?id_status=3`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "GET",
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+      return {};
+    });
+  return response;
+};
+export { getConcursos, getConcursoOne, postInscription, getNominas };

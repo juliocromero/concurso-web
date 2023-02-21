@@ -1,12 +1,40 @@
 <script setup>
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { VueEditor } from "vue3-editor";
+import pdftest from '../../public/anexo_III.pdf'
+import Logo_UNSAM from '../assets/logo.png'
+
+
+
+const createPdfAnexoIII = () => {
+  console.log(jspdf)
+  const doc = new jspdf.jsPDF(pdftest)
+  doc.text("Gerencia de Informatica", 130, 10); 
+  doc.addImage(Logo_UNSAM, 'png', 10, 2, 50, 10)
+  doc.line(10, 15, 200, 15)
+  doc.setTextColor("#6a99c0");
+  doc.setFontSize(9);
+  doc.text("Formularios a Generar", 10, 20)
+  doc.text(`Gerencia de Informática 12 Formularios a Generar ANEXO III – RESOLUCIÓN N°885/2021`, 10, 30)
+  doc.setTextColor("black");
+  doc.text("NOTA SOLICITUD DE INSCRIPCIÓN", 105, 40, {align:"center"})
+  doc.setFontSize(7);
+  doc.text('San Martín, ........de .......................de ..........-', 200, 60 ,{align:"right"})
+  doc.setFontSize(9);
+  doc.text(`SECRETARÍA ADMINISTRATIVA Y LEGAL:`,10,70)
+  doc.text(`Tengo el agrado de dirigirme a Ud. a fin de presentar la inscripción al:`,10,75)
+  /* doc.table(10, 200, ["asdasd","asdasd"], ["asdasd","asdasdasd"]) */
+  doc.save("a4.pdf");
+}
+
+createPdfAnexoIII()
+
 import {
   getConcursoOne,
   postInscription,
 } from "../components/concurso/Services";
-import Pdf from '../components/concurso/Pdf.vue'
+import Pdf from "../components/concurso/Pdf.vue";
 
 const props = defineProps({ title: String, open: Boolean });
 const dialog = ref(props.open || false);
@@ -38,6 +66,18 @@ const user = reactive({
   fecha_ingreso: "",
   dur_curso: "",
   id_concurso: "",
+
+  antec_laborales: "",
+  cargo_ocupado: "",
+  categoria: "1",
+  agrupamiento: "",
+  per_desempeño: "",
+  persona_a_cargo: "",
+  eva_desempeño: "",
+  lic_con_o_sin_gose_de_sueldo: "",
+  sanciones: "",
+  otras_referencias: "",
+  otros_antecedente_laborales: "",
 });
 
 const emit = defineEmits(["noRegister"]);
@@ -56,38 +96,42 @@ const valid = ref({
 
 const tabs = ref(1);
 
-const changeText = (res) => {
-  console.log(res);
-};
 const validOne = ref();
 const validTwo = ref();
 const validThree = ref();
+const validFour = ref();
+
 const { refs } = getCurrentInstance();
+
 const form = ref();
 
 user.id_concurso = parseInt(params.params.id);
-const userResult = ref()
+const userResult = ref();
 
 const validate = async () => {
-  if (tabs.value < 5) tabs.value++;
-  if (tabs.value == 5) {
-    console.log("creado con exito");
-  }
-  /* const { valid } = await form.value.validate();
-
-  if (valid) {
+/*   const { valid } = await form.value.validate();
+ */
+  if (true) {
     if (tabs.value < 5) tabs.value++;
     if (tabs.value == 5) {
-      userResult.value = postInscription(user);
+      /* userResult.value = postInscription(user); */
     }
-  } */
+  }
 };
 const rulesEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-
-
+const { push } = useRouter();
+const toHome = () => {
+  push("/concursos");
+};
 </script>
 <template>
-  <v-container style="height: max-content;" class="d-flex flex-column justify-space-between container-form">
+  <v-container
+    style="height: max-content"
+    class="d-flex flex-column justify-space-between container-form"
+  >
+    <v-btn class="mb-2" icon dark @click="toHome">
+      <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>
     <v-window v-model="tabs" v-if="tabs < 5">
       <h1 class="text-center">{{ titleConcurso.data?.name }}</h1>
 
@@ -234,10 +278,10 @@ const rulesEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         </v-form>
       </v-window-item>
 
-      <v-window-item :value="3">
+      <!-- <v-window-item :value="3">
         <VueEditor v-model="text" />
-      </v-window-item>
-      <v-window-item :value="4">
+      </v-window-item> -->
+      <v-window-item :value="3">
         <v-form ref="form" v-model="validThree">
           <v-row>
             <v-col cols="12" sm="6"
@@ -291,6 +335,120 @@ const rulesEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
                 v-model="user.dur_curso"
                 :rules="[(duracionCurso) => !!duracionCurso || 'Es requerido']"
                 label="Duracion curso"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-window-item>
+
+      <v-window-item :value="4">
+        <v-form ref="form" v-model="validFour">
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.cargo_ocupado"
+                :rules="[(cargo) => !!cargo || 'Es requerido']"
+                label="Cargo ocupado"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.categoria"
+                type="number"
+                :rules="[(categoria) => !!categoria || 'Es requerido']"
+                label="Categoría"
+                required
+              ></v-text-field>
+            </v-col>
+             <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.agrupamiento"
+                :rules="[(agrupamiento) => !!agrupamiento || 'Es requerido']"
+                label="Agrupamiento"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.per_desempeño"
+                :rules="[(desempeño) => !!desempeño || 'Es requerido']"
+                label="Período desempeño"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.persona_a_cargo"
+                :rules="[(cargo) => !!cargo || 'Es requerido']"
+                type="number"
+                label="Personal a cargo"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.eva_desempeño"
+                :rules="[(desempeño) => !!desempeño || 'Es requerido']"
+                label="Evaluación desempeño"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.lic_con_o_sin_gose_de_sueldo"
+                :rules="[(sueldo) => !!sueldo || 'Es requerido']"
+                label="Licencias con y sin goce de sueldo"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.sanciones"
+                :rules="[(sanciones) => !!sanciones || 'Es requerido']"
+                label="Sanciones"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.otras_referencias"
+                :rules="[(referencias) => !!referencias || 'Es requerido']"
+                label="Otras referencias"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.antec_laborales"
+                :rules="[
+                  (antecedentesLaborales) =>
+                    !!antecedentesLaborales || 'Es requerido',
+                ]"
+                label="antecedentes laborales"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                variant="solo"
+                v-model="user.otros_antecedente_laborales"
+                :rules="[
+                  (antecedentesLaborales) =>
+                    !!antecedentesLaborales || 'Es requerido',
+                ]"
+                label="Otros antecedentes laborales"
                 required
               ></v-text-field>
             </v-col>

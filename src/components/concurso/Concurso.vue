@@ -2,10 +2,11 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import LoginForm from "./LoginForm.vue";
-import Block from '../../assets/icons/Block.vue'
-import Canvas from '../../assets/icons/Canvas.vue'
-const { items } = defineProps({
+import Block from "../../assets/icons/Block.vue";
+import Canvas from "../../assets/icons/Canvas.vue";
+const { items, disabled } = defineProps({
   items: Object,
+  disabled: { type: Boolean, required: false, default: false },
 });
 const emit = defineEmits(["noRegister"]);
 const expand = ref(false);
@@ -23,13 +24,29 @@ const loginIn = () => {
   }
 };
 const active = ref(false);
+
+const typeJurado = (type) => {
+  switch (type) {
+    case 1:
+      return "TITULAR";
+    case 2:
+      return "SUPLENTE";
+    case 3:
+      return "VEEDOR";
+  }
+};
+
+
+const toNomina = (id) => {
+  push(`/nomina/${id}`);
+};
 </script>
 
 <template>
   <div class="canvas-cupo">
     <Canvas fill="#2C88CD" />
   </div>
-  <v-card class="mx-auto d-flex flex-column" width="300px" height="250px">
+  <v-card class="mx-auto d-flex flex-column" width="300px">
     <v-card-item :title="items.name"> </v-card-item>
 
     <v-card-text class="py-0">
@@ -51,9 +68,29 @@ const active = ref(false);
     </v-card-text>
 
     <v-divider></v-divider>
-
-    <v-card-actions>
-      <v-btn block variant="flat" color="success" @click="loginIn()"
+    <v-card-text v-if="disabled">
+      <h4 class="text-start pa-2">Concurso : {{ items.numero }}</h4>
+      <v-divider />
+      <h4>Jurados</h4>
+      <v-list lines="one">
+        <v-list-item
+          v-for="item in items.concurso_jurado.slice(0, 2)"
+          :key="item.title"
+          :title="item.jurado.name"
+          :subtitle="typeJurado(item.id_tipo_jurado)"
+        ></v-list-item>
+      </v-list>
+      <v-btn block variant="flat" color="success" @click="toNomina(items.id)"
+        >Ver mas</v-btn
+      >
+    </v-card-text>
+    <v-card-actions v-if="!disabled">
+      <v-btn
+        block
+        variant="flat"
+        color="success"
+        @click="loginIn()"
+        :disabled="disabled"
         >Inscribirse</v-btn
       >
     </v-card-actions>
@@ -70,14 +107,14 @@ const active = ref(false);
 .concurso__ver-mas {
   width: 100%;
 }
-.canvas-cupo{
+.canvas-cupo {
   position: absolute;
-    z-index: 1;
-    top: 0;
-    width: 100%;
-    left: 0;
-    right: 0;
-    text-align: end;
-    padding: 8px 20px;
+  z-index: 1;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  text-align: end;
+  padding: 8px 20px;
 }
 </style>
