@@ -64,7 +64,7 @@ const toHome = ()=> {
           <td width="20%" class="ancho33 center">
             EXPEDIENTE N° {{ nomina.expediente }}
           </td>
-          <td class="ancho33 center" colspan="3">D. SA N° {{}}</td>
+          <td class="ancho33 center" colspan="3">D. SA N° {{nomina?.sa_rr_nro}}</td>
         </tr>
         <tr>
           <td class="ancho33">TIPO DE CONCURSO</td>
@@ -76,26 +76,26 @@ const toHome = ()=> {
         </tr>
         <tr>
           <td>DEPENDENCIA</td>
-          <td colspan="5" class="center" style="text-transform: uppercase">
-            {{ nomina.nombre_dependencias }}
+          <td colspan="5" class="center text-center" style="text-transform: uppercase">
+            {{ nomina.dependencia }}
           </td>
         </tr>
         <tr>
           <td>SUBDEPENDENCIA</td>
-          <td colspan="5" class="center">
-            {{ nomina.nombre_sub_dependecias }}
+          <td colspan="5" class="center text-center">
+            {{ nomina.subdependencia }}
           </td>
         </tr>
         <tr>
           <td class="ancho25">CATEGORIA (CCT Decreto N° 366/06)</td>
-          <td class="center">{{}}</td>
-          <td width="30%" class="ancho25">CANTIDAD DE CARGOS A CUBRIR</td>
+          <td class="center">{{nomina?.categoria}}</td>
+          <td width="30%" class="ancho25">(CANTIDAD DE CARGOS A CUBRIR)</td>
           <td width="22%" colspan="2" class="center ancho25">{{}}</td>
         </tr>
         <tr>
           <td>CARGO</td>
           <td colspan="5" class="center">
-            ASISTENTE ADMINISTRATIVO EN EL DEPARTAMENTO DE ALUMNOS
+            {{}}
           </td>
         </tr>
         <tr>

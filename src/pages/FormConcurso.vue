@@ -2,33 +2,7 @@
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { VueEditor } from "vue3-editor";
-import pdftest from '../../public/anexo_III.pdf'
-import Logo_UNSAM from '../assets/logo.png'
-
-
-
-const createPdfAnexoIII = () => {
-  console.log(jspdf)
-  const doc = new jspdf.jsPDF(pdftest)
-  doc.text("Gerencia de Informatica", 130, 10); 
-  doc.addImage(Logo_UNSAM, 'png', 10, 2, 50, 10)
-  doc.line(10, 15, 200, 15)
-  doc.setTextColor("#6a99c0");
-  doc.setFontSize(9);
-  doc.text("Formularios a Generar", 10, 20)
-  doc.text(`Gerencia de Informática 12 Formularios a Generar ANEXO III – RESOLUCIÓN N°885/2021`, 10, 30)
-  doc.setTextColor("black");
-  doc.text("NOTA SOLICITUD DE INSCRIPCIÓN", 105, 40, {align:"center"})
-  doc.setFontSize(7);
-  doc.text('San Martín, ........de .......................de ..........-', 200, 60 ,{align:"right"})
-  doc.setFontSize(9);
-  doc.text(`SECRETARÍA ADMINISTRATIVA Y LEGAL:`,10,70)
-  doc.text(`Tengo el agrado de dirigirme a Ud. a fin de presentar la inscripción al:`,10,75)
-  /* doc.table(10, 200, ["asdasd","asdasd"], ["asdasd","asdasdasd"]) */
-  doc.save("a4.pdf");
-}
-
-createPdfAnexoIII()
+import pdftest from "../../public/anexo_III.pdf";
 
 import {
   getConcursoOne,
@@ -73,7 +47,7 @@ const user = reactive({
   agrupamiento: "",
   per_desempeño: "",
   persona_a_cargo: "",
-  eva_desempeño: "",
+  eva_desempe_o: "",
   lic_con_o_sin_gose_de_sueldo: "",
   sanciones: "",
   otras_referencias: "",
@@ -106,15 +80,15 @@ const { refs } = getCurrentInstance();
 const form = ref();
 
 user.id_concurso = parseInt(params.params.id);
-const userResult = ref();
+const userResult = reactive({});
 
 const validate = async () => {
-/*   const { valid } = await form.value.validate();
- */
-  if (true) {
+  const { valid } = await form.value.validate();
+
+  if (valid) {
     if (tabs.value < 5) tabs.value++;
     if (tabs.value == 5) {
-      /* userResult.value = postInscription(user); */
+      userResult.value = await postInscription(user);
     }
   }
 };
@@ -364,7 +338,7 @@ const toHome = () => {
                 required
               ></v-text-field>
             </v-col>
-             <v-col cols="12" sm="6">
+            <v-col cols="12" sm="6">
               <v-text-field
                 variant="solo"
                 v-model="user.agrupamiento"
@@ -466,7 +440,7 @@ const toHome = () => {
       <v-btn @click="validate">Siguiente</v-btn>
     </div>
     <div v-else>
-      <Pdf :result="userResult" />
+      <Pdf :result="userResult" :concurso="titleConcurso?.data" />
     </div>
   </v-container>
 </template>
