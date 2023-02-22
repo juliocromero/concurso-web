@@ -27,12 +27,12 @@ const items = ref([
     <v-container class="conteiner-form_login" >      
       <LoginForm />
     </v-container >
-  </div>
 
+  </div>
 </template>
 
 <style>
 .conteiner-form_login{
-  
+  margin-top: 0px;
 }
 </style>

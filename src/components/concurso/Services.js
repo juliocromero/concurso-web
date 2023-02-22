@@ -1,4 +1,6 @@
-const URL = "http://192.168.191.75:3001/";
+// const URL = "http://192.168.191.75:3001/";
+// Get the url from the .env file named BACKEND_URL
+const URL = import.meta.env.BACKEND_URL;
 
 const getConcursos = async () => {
   const response = await fetch(URL + "concurso/list", {
