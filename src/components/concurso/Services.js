@@ -1,6 +1,6 @@
-// const URL = "http://192.168.191.75:3001/";
+const URL = import.meta.env.VITE_BACKEND_URL_DEV;
 // Get the url from the .env file named BACKEND_URL
-const URL = import.meta.env.BACKEND_URL;
+/* const URL = import.meta.env.VITE_BACKEND_URL */
 
 const getConcursos = async () => {
   const response = await fetch(URL + "concurso/list", {
@@ -15,7 +15,7 @@ const getConcursos = async () => {
       return res;
     })
     .catch((err) => {
-      console.log(err);
+      console.log("err");
       return [];
     });
   return response;
@@ -84,4 +84,33 @@ const getNominas = async (id) => {
     });
   return response;
 };
-export { getConcursos, getConcursoOne, postInscription, getNominas };
+
+const getIsLogin = async () => {
+  const token = localStorage.getItem('token')
+  console.log(token)
+  if (token) {
+    const response = await fetch(URL + `users/auth`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"token": token}),
+      method: "POST",
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return false
+      });
+    return response;
+  }
+  return false
+
+};
+
+export { getConcursos, getConcursoOne, postInscription, getNominas, getIsLogin };

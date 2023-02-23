@@ -8,7 +8,7 @@ export default defineConfig({
   // define host and port for development
   server: {
     // host: 'localhost',
-    port: 3002,
+    port: 80,
     hmr: {
       overlay: false,
       port: 4001

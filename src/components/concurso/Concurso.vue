@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import LoginForm from "./LoginForm.vue";
 import Block from "../../assets/icons/Block.vue";
 import Canvas from "../../assets/icons/Canvas.vue";
+import { getIsLogin } from './Services'
 const { items, disabled } = defineProps({
   items: Object,
   disabled: { type: Boolean, required: false, default: false },
@@ -15,12 +16,13 @@ const modalInscription = ref(false);
 
 const { push } = useRouter();
 
-const loginIn = () => {
-  const token = localStorage.getItem("token");
+const loginIn = async () => {
+  const token = await getIsLogin()
+  localStorage.setItem('idConcurso', items.id)
   if (token) {
-    push(`/concursos/${items.id}`, { name: "asdasd" });
+    push(`/concursos/${items.id}`);
   } else {
-    emit("noRegister");
+    push('/login', {reload: true})
   }
 };
 const active = ref(false);

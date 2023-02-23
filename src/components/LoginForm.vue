@@ -1,30 +1,48 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import logo from "../assets/logo.png";
 
 const items = ref(["@unsam.edu.ar", "@iib.unsam.edu.ar"]);
 const menu = ref(false);
 const Prefix = ref('@unsam.edu.ar')
-// Create a method to handle a google callback from the login
-function decodeJwtResponse(token) {
-	let base64Url = token.split('.')[1]
-	let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-	}).join(''));
-	return JSON.parse(jsonPayload)
-}
+
+onMounted(()=>{
+	let beforeAuth2 = document.getElementById('0auth2')
+	beforeAuth2.remove()
+
+	let auth2 = document.createElement('script')
+	auth2.setAttribute('id','0auth2')
+	auth2.setAttribute('src','https://accounts.google.com/gsi/client')
+	auth2.setAttribute('async', true)
+	auth2.setAttribute('defer', true)
+	document.body.appendChild(auth2)
+})
+const { push } = useRouter()
 globalThis.login = async (response) => {
-	// Decode the response
-	let decoded = decodeJwtResponse(response.credential)
-	console.log(decoded);
-	// Send the response to the backend (example)
+	localStorage.setItem("token", response.credential);
+	const concursoId = localStorage.getItem('idConcurso')
+	if(concursoId){
+		push(`/concursos/${concursoId}`)
+	}else{
+		push(`/concursos`)
+	}
 };
+
 
 </script>
 <template>
+	<v-container>
 	<v-row>
-		<v-col md="6" col="12" class="card_form">
-			<v-card rounded="0" height="350px">
+		<v-col md="6" col="12" class="card_form pa-0 pt-2" >
+			<v-card rounded="0" class="d-flex flex-column h-100 align-center">
+				<v-toolbar class="bg-white">
+					<h3 class="ml-2 ">Inicio de sesion</h3>
+				</v-toolbar>
+				<v-card-text class="text-h5 py-2 d-flex flex-column justify-space-between">
+				<div class="d-flex justify-center pa-4">
+					<v-img :src="logo" height="50px" />
+				</div>
 
 				<!-- I guess -->
 				<div id="g_id_onload"
@@ -46,6 +64,8 @@ globalThis.login = async (response) => {
 					data-locale="es-419"
 					data-logo_alignment="left">
 				</div>
+
+				</v-card-text>
 				<!-- First try login -->
 
 				<!-- <v-card-text class="text-h5 py-2">
@@ -77,7 +97,12 @@ globalThis.login = async (response) => {
 				</v-card-actions> -->
 			</v-card>
 		</v-col>
-		<v-col md="6" cols="12">
+		<v-col md="6" cols="12" class="pa-0 pt-2">
+			<v-img src="http://unsam.edu.ar/prensa/galeria/3.jpg"  />
+			
+		</v-col>
+		</v-row>
+		<div >
 			<div class="pa-4 d-flex flex-column justify-space-between register_form">
 				<div>
 					<h3>
@@ -89,8 +114,9 @@ globalThis.login = async (response) => {
 					</p>
 				</div>
 			</div>
-		</v-col>
-	</v-row>
+		</div>
+		
+	</v-container>
 </template>
 
 <style scoped>
@@ -102,7 +128,7 @@ globalThis.login = async (response) => {
 }
 
 .register_form {
-	height: 100vh;
+	color:white;
 }
 </style>
 <style>

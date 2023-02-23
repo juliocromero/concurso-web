@@ -7,7 +7,7 @@ import { mdi, aliases } from "vuetify/iconsets/mdi";
 import routes from './routes'
 import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";
-
+import { getIsLogin } from './components/concurso/Services'
 const vuetify = createVuetify({
   icons: {
     defaultSet: "mdi",
@@ -23,9 +23,10 @@ const router = createRouter({
   });
 
 const app = createApp(App);
-router.beforeEach((to, from, next) => {
+
+router.beforeEach(async (to, from, next) => {
   if(to.name == 'concursos'){
-    const token = localStorage.getItem("token");
+    const token = await getIsLogin()
     if(token){
       next()
     }else{
