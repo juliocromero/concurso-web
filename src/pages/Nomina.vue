@@ -77,13 +77,13 @@ const toHome = ()=> {
         <tr>
           <td>DEPENDENCIA</td>
           <td colspan="5" class="center text-center" style="text-transform: uppercase">
-            {{ nomina.dependencia }}
+            {{ nomina.dependencias?.name }}
           </td>
         </tr>
         <tr>
           <td>SUBDEPENDENCIA</td>
           <td colspan="5" class="center text-center">
-            {{ nomina.subdependencia }}
+            {{ nomina.sub_dependencias?.name }}
           </td>
         </tr>
         <tr>

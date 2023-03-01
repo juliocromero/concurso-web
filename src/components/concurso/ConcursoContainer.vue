@@ -17,7 +17,7 @@ const items = ref([
     src: capacitacion,
   },
 ]);
-onBeforeMount(async () => {
+onMounted(async () => {
   const concursosData = await getConcursos();
   concursos.value = concursosData;
 });
@@ -65,7 +65,7 @@ const componentCaseSituation = computed(()=>{
     ></v-carousel-item>
   </v-carousel>
   <v-select
-    class="pa-2"
+    class="pa-2 select-type"
     variant="solo"
     v-model="select"
     :items="typeConcurso"
@@ -97,6 +97,9 @@ const componentCaseSituation = computed(()=>{
   </v-container>
 </template>
 <style scoped>
+.select-type{
+  display: block;
+}
 .carousel__item {
   min-height: 200px;
   width: 100%;

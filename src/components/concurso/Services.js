@@ -3,7 +3,7 @@ const URL = import.meta.env.VITE_BACKEND_URL_DEV;
 /* const URL = import.meta.env.VITE_BACKEND_URL */
 
 const getConcursos = async () => {
-  const response = await fetch(URL + "concurso/list", {
+  const response = await fetch(URL + "concurso/status?id_status=2", {
     method: "GET",
   })
     .then((response) => {
@@ -87,29 +87,28 @@ const getNominas = async (id) => {
 
 const getIsLogin = async () => {
   const token = localStorage.getItem('token')
-  console.log(token)
-  if (token) {
-    const response = await fetch(URL + `users/auth`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({"token": token}),
-      method: "POST",
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
+  if (!token) return { "message": "Usuario sin acceso comunicarse con el administrador", "data": false }
+
+  const response = await fetch(URL + `users/auth`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "token": token }),
+    method: "POST",
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+    .then((res) => {
+      return res;
     })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        return false
-      });
-    return response;
-  }
-  return false
+    .catch((err) => {
+      return err
+    });
+  return response;
+
 
 };
 

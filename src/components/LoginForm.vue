@@ -2,7 +2,7 @@
 import { computed, ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import logo from "../assets/logo.png";
-
+import { getIsLogin } from './concurso/Services'
 const items = ref(["@unsam.edu.ar", "@iib.unsam.edu.ar"]);
 const menu = ref(false);
 const Prefix = ref('@unsam.edu.ar')
@@ -18,14 +18,22 @@ onMounted(()=>{
 	auth2.setAttribute('defer', true)
 	document.body.appendChild(auth2)
 })
+const errorLogin = ref({
+    "message": "",
+    "data": false
+})
+
 const { push } = useRouter()
-globalThis.login = async (response) => {
+	globalThis.login = async (response) => {
 	localStorage.setItem("token", response.credential);
 	const concursoId = localStorage.getItem('idConcurso')
-	if(concursoId){
+	const isValidToken = await getIsLogin(response.credential)
+	errorLogin.value.data = !isValidToken.data
+	errorLogin.value.message = isValidToken.message
+
+	if(isValidToken.data){
 		push(`/concursos/${concursoId}`)
 	}else{
-		push(`/concursos`)
 	}
 };
 
@@ -114,8 +122,20 @@ globalThis.login = async (response) => {
 					</p>
 				</div>
 			</div>
+			
+		<v-snackbar v-model="errorLogin.data">
+			{{ errorLogin.message }}
+			<template v-slot:actions>
+			<v-btn
+				:color="errorLogin.data == false? 'green': 'pink' "
+				variant="text"
+				@click="errorLogin.data = false"
+			>
+			Close
+			</v-btn>
+		</template>
+          </v-snackbar>
 		</div>
-		
 	</v-container>
 </template>
 

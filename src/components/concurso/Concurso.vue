@@ -19,7 +19,7 @@ const { push } = useRouter();
 const loginIn = async () => {
   const token = await getIsLogin()
   localStorage.setItem('idConcurso', items.id)
-  if (token) {
+  if (token.data) {
     push(`/concursos/${items.id}`);
   } else {
     push('/login', {reload: true})

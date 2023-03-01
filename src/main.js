@@ -27,7 +27,7 @@ const app = createApp(App);
 router.beforeEach(async (to, from, next) => {
   if(to.name == 'concursos'){
     const token = await getIsLogin()
-    if(token){
+    if(token.data){
       next()
     }else{
       next('/concursos');
