@@ -48,12 +48,12 @@ const toNomina = (id) => {
   <div class="canvas-cupo">
     <Canvas fill="#2C88CD" />
   </div>
+  
   <v-card class="mx-auto d-flex flex-column" width="300px">
-    <v-card-item :title="items.name"> </v-card-item>
-
+    <v-card-item :title="items.numero"> </v-card-item>
     <v-card-text class="py-0">
       <div>
-        {{ items.descripcion }}
+        {{ items.dependencia.name }}
       </div>
       <div class="pt-4">
         <Block />

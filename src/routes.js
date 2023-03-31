@@ -8,7 +8,8 @@ const routes = [
     { path: '/concursos', component: Concursos, name:"concursosGroup" },    
     { path: '/concursos/:id', component: Concurso, name:"concursos" },       
     { path: '/nomina/:id', component: Nomina, name:"nomina" },
-    { path: '/login', component: Login}
+    { path: '/login', component: Login},
+	{ path: '/', component: Login}
   ]
 
   export default routes

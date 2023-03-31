@@ -32,7 +32,7 @@ const { push } = useRouter()
 	errorLogin.value.message = isValidToken.message
 
 	if(isValidToken.data){
-		push(`/concursos/${concursoId}`)
+		push(`/concursos/`)
 	}else{
 	}
 };
@@ -106,7 +106,7 @@ const { push } = useRouter()
 			</v-card>
 		</v-col>
 		<v-col md="6" cols="12" class="pa-0 pt-2">
-			<v-img src="http://unsam.edu.ar/prensa/galeria/3.jpg"  />
+			<v-img src="img/3.jpg"  />
 			
 		</v-col>
 		</v-row>

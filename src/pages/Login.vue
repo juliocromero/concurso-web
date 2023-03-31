@@ -4,7 +4,7 @@ import LoginForm from '../components/LoginForm.vue'
 
 const items = ref([
   {
-    src: "http://www.unsam.edu.ar/img/capacitacion_PAS.jpg",
+    src: "img/capacitacion_PAS.jpg",
   },
 ]);
 </script>
