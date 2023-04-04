@@ -32,7 +32,7 @@ const { push } = useRouter()
 	errorLogin.value.message = isValidToken.message
 
 	if(isValidToken.data){
-		push(`/concursos/`)
+		push(`/concursos/${concursoId}`)
 	}else{
 	}
 };

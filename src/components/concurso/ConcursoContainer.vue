@@ -77,7 +77,6 @@ const componentCaseSituation = computed(()=>{
     single-line
   ></v-select>
   <v-container class="container-concurso">
-    {{ concursos }}
     <!-- <div v-for="concurso in concursos" :key="concurso.id"  class="mt-4 pa-4 ">
       <div>
         <Concurso :items="concurso" @noRegister="noRegister" />

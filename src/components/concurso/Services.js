@@ -1,4 +1,4 @@
-const URL = import.meta.env.VITE_BACKEND_URL_DEV1;
+const URL = import.meta.env.VITE_BACKEND_URL_DEV;
 // Get the url from the .env file named BACKEND_URL
 /* const URL = import.meta.env.VITE_BACKEND_URL */
 

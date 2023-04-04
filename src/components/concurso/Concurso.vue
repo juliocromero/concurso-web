@@ -50,10 +50,16 @@ const toNomina = (id) => {
   </div>
   
   <v-card class="mx-auto d-flex flex-column" width="300px">
-    <v-card-item :title="items.numero"> </v-card-item>
+    <v-card-item> Concurso N° {{ items.numero }}</v-card-item>
     <v-card-text class="py-0">
       <div>
-        {{ items.dependencia.name }}
+        Tipo Concurso:{{ items.tipo_concurso }}
+      </div>
+      <div>
+        Dependencia:{{ items.dependencias.name }}
+      </div>
+      <div>
+        Agrupamiento : {{ items.agrupamiento }}
       </div>
       <div class="pt-4">
         <Block />
@@ -61,7 +67,7 @@ const toNomina = (id) => {
 
       <div
         class="w-100 d-flex justify-end"
-        v-if="items.descripcion.length > 200"
+        v-if="items.agrupamiento.length > 200"
       >
         <v-btn variant="text" @click="active = !active">{{
           active ? "ver menos" : "ver mas"
