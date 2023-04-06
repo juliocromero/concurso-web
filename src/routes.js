@@ -9,7 +9,7 @@ const routes = [
     { path: '/concursos/:id', component: Concurso, name:"concursos" },       
     { path: '/nomina/:id', component: Nomina, name:"nomina" },
     { path: '/login', component: Login},
-	{ path: '/', component: Login}
+	  { path: '/', component: Concursos}
   ]
 
   export default routes

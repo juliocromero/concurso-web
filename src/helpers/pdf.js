@@ -42,7 +42,7 @@ function createPdfAnexoIII(response, concurso) {
         ],
     ];
     var rows = [
-        ["DEPENDENCIA", concurso?.dependencia],
+        ["DEPENDENCIA", concurso?.dependencias?.name],
         ["CARGO", response?.cargo_ocupado],
         ["CATEGORÍA", response?.categoria]
     ];
@@ -80,17 +80,17 @@ function createPdfAnexoIV(response, concurso) {
     doc.text('NO he sido condenado/a por delito doloso, hasta el cumplimiento de la pena', 110, 90, { align: 'center' })
     doc.text('privativa de la libertad o el término previsto para la prescripción de la pena.', 110, 95, { align: 'center' })
 
-    doc.text('NO he sido condenado/a por delito en perjuicio de cualquier Institución', 110, 105, { align: 'center' })
+    doc.text('NO he sido condenado/a por delito en perjuicio de cualquier Institución', 155, 105, { align: 'right' })
     doc.text('Universitaria o de la Administración Pública Nacional, provincial o municipal, sus entes', 110, 110, { align: 'center' })
     doc.text('descentralizados o figuras afines.', 110, 115, { align: 'center' })
 
-    doc.text('NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.', 110, 125, { align: 'center' })
+    doc.text('NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.', 151, 125, { align: 'right' })
 
     doc.text('NO me encuentro exonerado/a o declarado/a cesante de cualquier organismo', 110, 135, { align: 'center' })
     doc.text('de los poderes públicos nacionales, provinciales o municipales, sus entes descentralizados', 110, 140, { align: 'center' })
     doc.text('o figuras afines.', 110, 145, { align: 'center' })
 
-    doc.text('Que he tomado conocimiento de las normas que rigen el presente llamado,', 110, 155, { align: 'center' })
+    doc.text('Que he tomado conocimiento de las normas que rigen el presente llamado,', 108, 155, { align: 'center' })
     doc.text('como así también las correspondientes a la UNIVERSIDAD y a la actividad No Docente.', 110, 160, { align: 'center' })
 
     doc.text('Cualquier modificación de los datos consignados serán informados antes de la', 110, 170, { align: 'center' })
@@ -255,7 +255,12 @@ function createPdfAnexoV(response, concurso) {
 
     var columnsAntecedentesLaborales = [
         [
-            { content: `1- A FINES AL CARGO`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+            { content: `ANTECEDENTES
+            (comiense por su(s) Actual(es) y continue en orden cronologico descendente)
+            `, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+        ],
+        [
+            { content: `1 - AFINES AL CARGO`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
@@ -283,9 +288,9 @@ function createPdfAnexoV(response, concurso) {
     doc.addImage(Logo_UNSAM, "png", 10, 22, 50, 10);
     doc.line(10, 35, 200, 35);
 
-    var columnsAntecedentesLaborales = [
+    var columnsAntecedentesLaboralesOtros = [
         [
-            { content: `2- OTROS ANTECEDENTES EN LA INSTITUCIÓN 
+            { content: `2 - OTROS ANTECEDENTES EN LA INSTITUCIÓN 
             (por orden de antigüedad primero los más recientes)`, colSpan: 1, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
@@ -307,7 +312,7 @@ function createPdfAnexoV(response, concurso) {
     ];
     doc.autoTable({
         startY: 40,
-        head: columnsAntecedentesLaborales,
+        head: columnsAntecedentesLaboralesOtros,
         body: rowsAntecedentesLaborales,
         theme: 'grid'
     });
