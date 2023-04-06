@@ -1,10 +1,15 @@
-const URL = import.meta.env.VITE_BACKEND_URL_DEV;
+const URL = import.meta.env.VITE_BACKEND_URL_DEV1;
 // Get the url from the .env file named BACKEND_URL
 /* const URL = import.meta.env.VITE_BACKEND_URL */
 
 const getConcursos = async () => {
   const response = await fetch(URL + "concurso/status?id_status=2", {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     method: "GET",
+    
   })
     .then((response) => {
       if (response.ok) {
@@ -86,6 +91,7 @@ const getNominas = async (id) => {
 };
 
 const getIsLogin = async () => {
+  const idConcurso = localStorage.getItem('idConcurso')
   const token = localStorage.getItem('token')
   if (!token) return { "message": "Usuario sin acceso comunicarse con el administrador", "data": false }
 
@@ -94,7 +100,7 @@ const getIsLogin = async () => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ "token": token }),
+    body: JSON.stringify({ "idConcurso": idConcurso , "token": token }),
     method: "POST",
   }).then((response) => {
     if (response.ok) {

@@ -38,7 +38,7 @@ function createPdfAnexoIII(response, concurso) {
         [
             { content: `CONCURSO N° ${concurso?.numero} `, colSpan: 1, styles: {} },
             { content: `Exp. N° ${concurso?.expediente}`, colSpan: 1, styles: {} },
-            { content: `D. SAD o RR N° ${concurso?.sa_rr_nro}`, colSpan: 0, styles: {} },
+            { content: `D. SAD o RR N° ${concurso?.id_dependencia}`, colSpan: 0, styles: {} },
         ],
     ];
     var rows = [
@@ -235,7 +235,7 @@ function createPdfAnexoV(response, concurso) {
 
     var columnsOtrosEstudios = [
         [
-            { content: `3- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+            { content: `2- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
@@ -255,7 +255,7 @@ function createPdfAnexoV(response, concurso) {
 
     var columnsAntecedentesLaborales = [
         [
-            { content: `3- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+            { content: `1- A FINES AL CARGO`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
@@ -285,7 +285,7 @@ function createPdfAnexoV(response, concurso) {
 
     var columnsAntecedentesLaborales = [
         [
-            { content: `2- OTROS ANTECEDENTES EN LA INSTITUCIÓN O EN OTROS EMPLEOS AFINES AL CARGO A CONCURSAR
+            { content: `2- OTROS ANTECEDENTES EN LA INSTITUCIÓN 
             (por orden de antigüedad primero los más recientes)`, colSpan: 1, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
