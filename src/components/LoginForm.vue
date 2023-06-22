@@ -32,14 +32,14 @@ globalThis.login = async response => {
   errorLogin.value.message = isValidToken.message;
 	
   if (isValidToken.data) {
-	debugger
     if (concursoId) {
       push(`/concursos/${concursoId}`);
-    } else {
+    } 
+	
+  }
+  if(response.credential) {
       push(`/concursos`);
     }
-  } else {
-  }
 };
 </script>
 <template>
