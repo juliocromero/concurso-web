@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm.vue";
 import { useRouter } from "vue-router";
 import { getConcursos } from "./Services";
 import ConcursoInscripcion from "./ConcursosInscripcion.vue";
-import Nominas from './Nominas.vue'
+import Nominas from "./Nominas.vue";
 const isLogin = ref(false);
 const openFormConcurso = ref(false);
 
@@ -37,34 +37,36 @@ const typeConcurso = ref([
   { name: "Nómina de Inscripción", id: "4" },
 ]);
 
-const typeDeConcurso = ref(ConcursoInscripcion)
+const typeDeConcurso = ref(ConcursoInscripcion);
 
-const componentCaseSituation = computed(()=>{
-  const id = select.value.id
+const componentCaseSituation = computed(() => {
+ 
+  const {id} = select.value;
   switch (id) {
     case "2":
-      return ConcursoInscripcion
+      return ConcursoInscripcion;
     case "4":
-      return Nominas
+      return Nominas;
   }
-})
+});
+
+
+
+const changeType = type => {
+  switch (type) {
+    case 2:
+      select.value = { name: "Concurso - Inscripción", id: "2" };
+      break;
+    case 4:
+      select.value = { name: "Nómina de Inscripción", id: "4" };
+
+      break;
+  }
+};
 </script>
 
 <template>
-  <v-carousel
-    hide-delimiters
-    height="200px"
-    :continuous="false"
-    :show-arrows="false"
-  >
-    <v-carousel-item
-      v-for="(item, i) in items"
-      :key="i"
-      :src="item.src"
-      cover
-    ></v-carousel-item>
-  </v-carousel>
-  <v-select
+  <!-- <v-select
     class="pa-2 select-type"
     variant="solo"
     v-model="select"
@@ -75,7 +77,11 @@ const componentCaseSituation = computed(()=>{
     persistent-hint
     return-object
     single-line
-  ></v-select>
+  ></v-select> -->
+  <div class="d-flex">
+  <v-btn :color="select.id == 2 ? '#1a527c': ''" :class="select.id == 2 ? 'color-text': ''" class="mr-2 " @click="changeType(2)">Concursos vigentes</v-btn>
+  <v-btn :color="select.id == 4 ? '#1a527c': ''" :class="select.id == 4 ? 'color-text': ''" @click="changeType(4)">Nomina de inscriptos</v-btn>
+</div>
   <v-container class="container-concurso">
     <!-- <div v-for="concurso in concursos" :key="concurso.id"  class="mt-4 pa-4 ">
       <div>
@@ -83,6 +89,8 @@ const componentCaseSituation = computed(()=>{
       </div>
     </div> -->
     <!-- :concursos="concursos" @noRegister="noRegister"  -->
+    <h2 v-if="select.id == 2">Concurso no docentes vigentes</h2>
+    <h2 v-if="select.id == 4">Nominas de inscriptos</h2>
     <component
       :is="componentCaseSituation"
       :concursos="concursos"
@@ -96,7 +104,7 @@ const componentCaseSituation = computed(()=>{
   </v-container>
 </template>
 <style scoped>
-.select-type{
+.select-type {
   display: block;
 }
 .carousel__item {

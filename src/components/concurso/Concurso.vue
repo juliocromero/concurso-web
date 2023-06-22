@@ -42,29 +42,28 @@ const typeJurado = (type) => {
 const toNomina = (id) => {
   push(`/nomina/${id}`);
 };
+
+const verLlamado = () => {
+  push('/verLlamado')
+}
 </script>
 
 <template>
-  <div class="canvas-cupo">
-    <Canvas fill="#2C88CD" />
-  </div>
-  
-  <v-card class="mx-auto d-flex flex-column" width="300px">
-    <v-card-item> Concurso N° {{ items.numero }}</v-card-item>
-    <v-card-text class="py-0">
-      <div>
-        Tipo Concurso:{{ items.tipo_concurso }}
+  <div class="flex-column  pa-4" :class="!disabled ? 'carta-concurso': 'carta-nomina'" width="300px" >
+    <v-card-item v-if="!disabled" class=""> <h4 class="font-weight-bold">Concurso N° {{ items.numero }}</h4></v-card-item>
+    <v-card-text v-if="!disabled" class="py-0 content_concursos">
+      <div class="d-flex">
+        <p class="font-weight-bold">N° de expediente :</p> {{ items.expediente }}
       </div>
       <div>
-        Dependencia:{{ items.dependencias.name }}
+        <p class="font-weight-bold">Denominacion del cargo:</p>{{ items.denominacion_del_cargo }}
       </div>
-      <div>
-        Agrupamiento : {{ items.agrupamiento }}
+      <div class="d-flex">
+        <p class="font-weight-bold">Categoria : </p> {{ items.categoria }}
       </div>
-      <div class="pt-4">
-        <Block />
+      <div >
+        <p class="font-weight-bold">Dependencia : </p> {{ items.dependencias.name }}
       </div>
-
       <div
         class="w-100 d-flex justify-end"
         v-if="items.agrupamiento.length > 200"
@@ -75,11 +74,56 @@ const toNomina = (id) => {
       </div>
     </v-card-text>
 
-    <v-divider></v-divider>
-    <v-card-text v-if="disabled">
-      <h4 class="text-start pa-2">Concurso : {{ items.numero }}</h4>
-      <v-divider />
-      <h4>Jurados</h4>
+
+    <v-card-item v-if="disabled" class=""> <h4 class="font-weight-bold">Concurso N° {{ items.numero }}</h4></v-card-item>
+    <v-card-text v-if="disabled" class="py-0 content_concursos content-nomina__inscripto">
+      <div class="d-flex">
+        <p class="font-weight-bold">N° de expediente :</p> {{ items.expediente }}
+      </div>
+      <div>
+        <p class="font-weight-bold">Denominacion del cargo:</p>{{ items.denominacion_del_cargo }}
+      </div>
+      <div class="d-flex">
+        <p class="font-weight-bold">Categoria : </p> {{ items.categoria }}
+      </div>
+      <div >
+        <p class="font-weight-bold">Dependencia : </p> {{ items.dependencias.name }}
+      </div>
+      <h3 class="text-center">Jurados</h3>
+      
+      <v-divider class="ma-0"></v-divider>
+      <v-list lines="one" >
+        <v-list-item
+        class="list_jurados"
+          v-for="item in items.concurso_jurado.filter(e => e.id_tipo_jurado == 3)"
+          :key="item.title"
+          :title="item.jurado.name"
+          :subtitle="typeJurado(item.id_tipo_jurado)"
+        ></v-list-item>
+      </v-list>
+      <v-list lines="one" >
+        <v-list-item
+        class="list_jurados"
+          v-for="item in items.concurso_jurado.slice(0, 1).filter(e => e.id_tipo_jurado == 1)"
+          :key="item.title"
+          :title="item.jurado.name"
+          :subtitle="typeJurado(item.id_tipo_jurado)"
+        ></v-list-item>
+      </v-list>
+      
+      <div
+        class="w-100 d-flex justify-end"
+        v-if="items.agrupamiento.length > 200"
+      >
+        <v-btn variant="text" @click="active = !active">{{
+          active ? "ver menos" : "ver mas"
+        }}</v-btn>
+      </div>
+    </v-card-text>
+    <!-- <div v-if="disabled" class="carta-concurso">
+    <v-card-text >
+      <div class="d-flex"><p class="font-weight-bold" >Concurso :</p> {{ items.numero }}</div>
+      
       <v-list lines="one">
         <v-list-item
           v-for="item in items.concurso_jurado.slice(0, 2)"
@@ -88,24 +132,72 @@ const toNomina = (id) => {
           :subtitle="typeJurado(item.id_tipo_jurado)"
         ></v-list-item>
       </v-list>
-      <v-btn block variant="flat" color="success" @click="toNomina(items.id)"
-        >Ver mas</v-btn
-      >
-    </v-card-text>
-    <v-card-actions v-if="!disabled">
-      <v-btn
+    </v-card-text >
+    </div> -->
+
+      <div v-if="!disabled" class="d-flex justify-space-between">
+      <button
         block
         variant="flat"
-        color="success"
-        @click="loginIn()"
+        color="#1a527c"
+        class="button-concurso--action button-concurso--action-secundary"
+        style="color:white"
+        @click="verLlamado()"
         :disabled="disabled"
-        >Inscribirse</v-btn
+        size="small"
+        >VER LLAMADO</button
       >
-    </v-card-actions>
-  </v-card>
+      <button
+        block
+        variant="flat"
+        color=""
+        class="button-concurso--action "
+        @click="loginIn()"
+        size="small"
+        :disabled="disabled"
+        > INSCRIBIRSE </button
+      >
+    </div>
+    <div v-if="disabled" class="d-flex justify-space-between">
+      <button
+        block
+        variant="flat"
+        color="#1a527c"
+        class="button-concurso--action button-concurso--action-secundary button-concurso--action-terciary"
+        style="color:white"
+        @click="toNomina(items.id)"
+        size="small"
+        >VER NOMINA</button
+      >
+    </div>
+  </div>
 </template>
 
 <style scoped>
+
+.content_concursos{
+  overflow: auto;
+}
+.button-concurso--action{
+  border: 1px solid #1a527c;
+  border-radius: 5px;
+  padding: 8px;
+  color: #1a527c;
+  font-size: 12px;
+  
+}
+.button-concurso--action-secundary {
+  background-color: #1a527c;
+}
+.button-concurso--action-terciary{
+  width:100%;
+}
+.carta-concurso{
+  width: 270px;
+  height: 350px;
+  border: 1px solid #545454;
+  display: flex;
+}
 .concurso__description {
   width: 100%;
   white-space: nowrap;
@@ -124,5 +216,15 @@ const toNomina = (id) => {
   right: 0;
   text-align: end;
   padding: 8px 20px;
+}
+.carta-nomina{
+  
+  width: 270px;
+  height: 550px;
+  border: 1px solid #545454;
+  display: flex;
+}
+.list_jurados{
+  text-align: center;
 }
 </style>

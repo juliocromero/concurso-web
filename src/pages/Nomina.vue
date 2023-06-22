@@ -46,9 +46,32 @@ const toHome = ()=> {
 <template>
 
   <v-container>
+
     <v-btn class="mb-2" icon dark @click="toHome">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
+    <h2 class="font-weight-bold">Nomina de inscriptos</h2>    
+    <h4 >Concurso N° {{ nomina?.numero }}</h4>
+<div class="d-flex" >
+  
+  <img style="width: 50px; height: 50px;"
+              src="https://unsam.edu.ar/img/logo-unsam-ch.png"
+              class="img mr-2"
+              alt="UNSAM"
+              border="0"
+            />
+            <h4 class="font-weight-bold" style="width: 200px">Universidad Nacional de San Martin</h4>
+</div>
+<div>
+  <h4 class="text-end">SECRETARÍA ADMINISTRATIVA</h4>
+</div>
+<v-divider></v-divider>
+<div>
+  <h4 class="text-center font-weight-black">ANEXO II- DISPOSICION S.AD N° 22/2016</h4>
+</div>
+<div>
+  <h2 class="text-center pt-4 pb-4"> <u>F4. FORMULARIO PUBLICACION DE LA NOMINA DE INSCRIPTOS</u></h2>
+</div>
     <v-table v-if="nomina" fixed-header>
       <tbody>
         <tr>
@@ -220,7 +243,7 @@ const toHome = ()=> {
 
 <style>
 .color_t {
-  color: white;
+  color: rgb(41, 41, 41);
   background-color: var(--color-brand);
 }
 </style>

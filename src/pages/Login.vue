@@ -18,21 +18,8 @@ const toHome = () => {
 
 <template>
   <div>
-    <v-carousel
-      hide-delimiters
-      height="200px"
-      :continuous="false"
-      :show-arrows="false"
-    >
-      <v-carousel-item
-        v-for="(item, i) in items"
-        :key="i"
-        :src="item.src"
-        cover
-      ></v-carousel-item>
-    </v-carousel>
     <v-container class="conteiner-form_login" > 
-      <v-btn class="mb-2" icon dark @click="toHome">
+      <v-btn class="mb-2" icon dark @click="toHome" variant="text">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     </v-container >

@@ -43,23 +43,16 @@ const IsRegister = () => {
 </script>
 
 <template>
-  <Carousel
-    :items-to-show="width"
-    :wrap-around="false"
-    snapAlign="start"
-  >
-    <Slide v-for="concurso in concursos" :key="concurso.id">
-      <Concurso :items="concurso" @noRegister="IsRegister" />
-    </Slide>
-
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+    <div class="d-flex container-concurso " >
+      <Concurso v-for="concurso in concursos" :key="concurso.id" :items="concurso" @noRegister="IsRegister" />
+    </div>
 </template>
 
 
 <style>
+.container-concurso{
+  gap: 10px;
+}
 .carousel__item {
   min-height: 200px;
   width: 100%;

@@ -41,20 +41,9 @@ creacteGridConcurso(document.body.clientWidth);
 </script>
 
 <template>
-  <Carousel
-    :items-to-show="width"
-    :wrap-around="false"
-    snapAlign="start"
-    
-  >
-    <Slide v-for="concurso in inscripcion" :key="concurso.id">
-      <Concurso :items="concurso" @noRegister="IsRegister" :disabled="true" />
-    </Slide>
-
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+  <div class="d-flex container-concurso "  >
+      <Concurso  v-for="concurso in inscripcion" :key="concurso.id" :items="concurso" @noRegister="IsRegister" :disabled="true" />
+  </div>
 </template>
 
 
