@@ -267,7 +267,7 @@ const toHome = () => {
                   'Primaria',
                   'Secundaria',
                   'Terciario',
-                  'Univercitario',
+                  'Universitario',
                 ]"
               ></v-select
             ></v-col>
@@ -293,13 +293,13 @@ const toHome = () => {
               <v-text-field
                 variant="solo"
                 v-model="user.fecha_ingreso"
-                label="Fecha de Ingreso"
+                label="Fecha de Egreso"
                 min="1920-12-01"
                 type="date"
                 pattern="\d{4}-\d{2}-\d{2}"
                 required
                 :rules="[
-                  (fechaDeIngreso) => !!fechaDeIngreso || 'Es requerido',
+                  (fechaDeEgreso) => !!fechaDeEgreso || 'Es requerido',
                 ]"
               ></v-text-field
             ></v-col>

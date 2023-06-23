@@ -52,6 +52,7 @@ const IsRegister = () => {
 <style>
 .container-concurso{
   gap: 10px;
+  flex-wrap: wrap
 }
 .carousel__item {
   min-height: 200px;

@@ -43,8 +43,8 @@ const toNomina = (id) => {
   push(`/nomina/${id}`);
 };
 
-const verLlamado = () => {
-  push('/verLlamado')
+const verLlamado = (id) => {
+  push(`/verLlamado/${id}`)
 }
 </script>
 
@@ -142,7 +142,7 @@ const verLlamado = () => {
         color="#1a527c"
         class="button-concurso--action button-concurso--action-secundary"
         style="color:white"
-        @click="verLlamado()"
+        @click="verLlamado(items.id)"
         :disabled="disabled"
         size="small"
         >VER LLAMADO</button

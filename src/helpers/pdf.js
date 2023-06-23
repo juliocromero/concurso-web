@@ -72,7 +72,7 @@ function createPdfAnexoIV(response, concurso) {
     doc.setTextColor('black')
     doc.text('DECLARACIÓN JURADA', 105, 50, { align: "center" })
     doc.setFontSize(9)
-    doc.text('Por la presente declaro bajo juramento que:', 105, 60, { align: "right" })
+    doc.text('Por la presente declaro bajo juramento que:', 118, 60, { align: "right" })
     doc.text('NO he incurrido en actos de fuerza contra el orden institucional y el sistema', 110, 65, { align: 'center' })
     doc.text('democrático y/o en violaciones a los derechos humanos y/o terrorismo de Estado; aún', 110, 70, { align: 'center' })
     doc.text('cuando me haya beneficiado por indulto o condonación de penas', 110, 75, { align: 'center' })
@@ -82,7 +82,7 @@ function createPdfAnexoIV(response, concurso) {
 
     doc.text('NO he sido condenado/a por delito en perjuicio de cualquier Institución', 155, 105, { align: 'right' })
     doc.text('Universitaria o de la Administración Pública Nacional, provincial o municipal, sus entes', 110, 110, { align: 'center' })
-    doc.text('descentralizados o figuras afines.', 110, 115, { align: 'center' })
+    doc.text('descentralizados o figuras afines.', 73, 115, { align: 'center' })
 
     doc.text('NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.', 151, 125, { align: 'right' })
 
@@ -111,7 +111,7 @@ function createPdfAnexoV(response, concurso) {
     doc.line(10, 35, 200, 35);
     doc.setTextColor("#6a99c0");
     doc.setFontSize(9);
-    doc.text("ANEXO IV.1 – RESOLUCIÓN N°885/2021", 10, 40);
+    doc.text("ANEXO V.1 – RESOLUCIÓN N°885/2021", 10, 40);
     doc.setTextColor('black')
     doc.text('FORMULARIO DE ANTECEDENTES PERSONALES', 105, 50, { align: "center" })
     doc.setFontSize(9)
@@ -188,27 +188,27 @@ function createPdfAnexoV(response, concurso) {
     doc.line(10, 35, 200, 35);
 
 
-    var columnsEducacion = [
-        [
-            {
-                content: `1- EDUCACIÓN FORMAL
-            (en caso de varios títulos de igual o distinto nivel, consignar en los cuadros siguientes)`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] }
-            },
-        ],
+    // var columnsEducacion = [
+    //     [
+    //         {
+    //             content: `1- EDUCACIÓN FORMAL
+    //         (en caso de varios títulos de igual o distinto nivel, consignar en los cuadros siguientes)`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] }
+    //         },
+    //     ],
 
-    ];
-    var rowsEducacion = [
-        [`1.- TÍTULO`, response?.educacion ],
+    // ];
+    // var rowsEducacion = [
+    //     [`1.- TÍTULO`, response?.educacion ],
 
-        [`INSTITUCIÓN`, response?.institucion ],
-        [`FECHA DE EGRESO`, response?.fecha_ingreso ],
-    ];
-    doc.autoTable({
-        startY: 50,
-        head: columnsEducacion,
-        body: rowsEducacion,
-        theme: 'grid'
-    });
+    //     [`INSTITUCIÓN`, response?.institucion ],
+    //     [`FECHA DE EGRESO`, response?.fecha_ingreso ],
+    // ];
+    // doc.autoTable({
+    //     startY: 50,
+    //     head: columnsEducacion,
+    //     body: rowsEducacion,
+    //     theme: 'grid'
+    // });
 
     var columnsEducacion = [
         [
@@ -235,7 +235,7 @@ function createPdfAnexoV(response, concurso) {
 
     var columnsOtrosEstudios = [
         [
-            { content: `2- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+            { content: `3- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
@@ -275,7 +275,7 @@ function createPdfAnexoV(response, concurso) {
         [`EVALUACIONES DE DESEMPEÑO
         (detallar años y calificación)`, response?.eva_desempe_o],
         [`OTRAS REFERENCIAS QUE
-        CONSIDERE PERTINENTE`, response?.otra_referencias]
+        CONSIDERE PERTINENTE`, response?.otros_antecedente_laborales]
     ];
     doc.autoTable({
         startY: 200,

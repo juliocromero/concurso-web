@@ -114,7 +114,7 @@ const itemsNav = ref([
         </div>
         <div style="position: absolute; bottom: 0" class="oculto-movil">
           <div style="float: left; background-color: #1a527c; padding: 10px">
-            <img src="/img/flecha_blanca.png" />
+            <img src="https://www.unsam.edu.ar/img/flecha_blanca.png" />
           </div>
           <div
             style="

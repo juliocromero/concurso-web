@@ -5,6 +5,19 @@ import { computed, onMounted } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { getConcursoOne } from "../components/concurso/Services";
 
+const formateDate = (value) => {
+  var fechaActual = new Date(value);
+  var dia = (fechaActual.getDate() + 1).toString().padStart(2, "0");
+  var mes = (fechaActual.getMonth() + 1).toString().padStart(2, "0"); // Los meses comienzan desde 0, por lo que se suma 1
+  var año = fechaActual.getFullYear();
+  fechaActual.setDate(dia, mes, año);
+  const offset = fechaActual.getTimezoneOffset();
+  fechaActual = new Date(fechaActual.getTime() - offset * 60 * 1000);
+  dia = fechaActual.getDate().toString().padStart(2, "0");
+  mes = (fechaActual.getMonth() + 1).toString().padStart(2, "0"); // Los meses comienzan desde 0, por lo que se suma 1
+  año = fechaActual.getFullYear();
+  return `${dia}/${mes}/${año}`;
+};
 const { params } = useRoute();
 
 const nomina = ref();
@@ -87,7 +100,7 @@ const toHome = ()=> {
           <td width="20%" class="ancho33 center">
             EXPEDIENTE N° {{ nomina.expediente }}
           </td>
-          <td class="ancho33 center" colspan="3">D. SA N° {{nomina?.sa_rr_nro}}</td>
+          <td class="ancho33 center" colspan="3">D. SA N°   {{nomina.num_acto_adminstrativo}}</td>
         </tr>
         <tr>
           <td class="ancho33">TIPO DE CONCURSO</td>
@@ -106,19 +119,19 @@ const toHome = ()=> {
         <tr>
           <td>SUBDEPENDENCIA</td>
           <td colspan="5" class="center text-center">
-            {{ nomina.sub_dependencias?.name }}
+            {{ nomina.id_subdependencia }}
           </td>
         </tr>
         <tr>
           <td class="ancho25">CATEGORIA (CCT Decreto N° 366/06)</td>
           <td class="center">{{nomina?.categoria}}</td>
           <td width="30%" class="ancho25">(CANTIDAD DE CARGOS A CUBRIR)</td>
-          <td width="22%" colspan="2" class="center ancho25">{{}}</td>
+          <td width="22%" colspan="2" class="center ancho25">{{nomina.cantidad_cargo_a_cubrir}}</td>
         </tr>
         <tr>
           <td>CARGO</td>
           <td colspan="5" class="center">
-            {{}}
+            {{nomina.denominacion_del_cargo}}
           </td>
         </tr>
         <tr>
@@ -151,10 +164,10 @@ const toHome = ()=> {
         </tr>
         <tr>
           <td>ENTREVISTA PERSONAL<br />(publicada en llamado)</td>
-          <td>{{nomina?.dia_entrevista}}</td>
-          <td> {{nomina?.hora_entrevista}}</td>
+          <td>{{formateDate(nomina?.fecha_personal_jurado)}}</td>
+          <td> {{nomina?.hora_personal_jurado}}</td>
           <td>
-            {{nomina?.lugar_entrevista}}
+            {{nomina?.lugar_entrevista_fecha1}}
           </td>
         </tr>
         <tr>
@@ -173,7 +186,7 @@ const toHome = ()=> {
             {{ jurado.jurado.name }} {{ jurado.jurado.apellido }}
           </td>
           <td class="center" colspan="2">{{ jurado.jurado.dni }}</td>
-          <td>DECANO INSTITUTO</td>
+          <td class="center" colspan="2">{{jurado.jurado.cargo}}</td>
         </tr>
         <tr v-if="forTypeOfJuradoSuplente?.length > 0">
           <td colspan="4" class="color_t text-center">SUPLENTES</td>
@@ -187,8 +200,8 @@ const toHome = ()=> {
           <td style="text-transform: uppercase">
             {{ jurado.jurado.name }} {{ jurado.jurado.apellido }}
           </td>
-          <td class="center" colspan="2">{{ jurado.jurado.dni }}</td>
-          <td>DECANO INSTITUTO</td>
+          <td class="text-center" colspan="2">{{ jurado.jurado.dni }}</td>
+          <td class="center" colspan="2">{{jurado.jurado.cargo}}</td>
         </tr>
         <tr v-if="forTypeOfJuradoVeedor?.length > 0">
           <td colspan="4" class="color_t text-center">VEEDOR DE LA ASOCIACIÓN GREMIAL</td>
@@ -203,7 +216,7 @@ const toHome = ()=> {
             {{ jurado.jurado.name }} {{ jurado.jurado.apellido }}
           </td>
           <td class="center" colspan="2">{{ jurado.jurado.dni }}</td>
-          <td>DECANO INSTITUTO</td>
+          <td class="center" colspan="2">{{jurado.jurado.cargo}}</td>
         </tr>
         <!-- <tr>
           <td colspan="4" class="color_t">SUPLENTES</td>
@@ -246,4 +259,5 @@ const toHome = ()=> {
   color: rgb(41, 41, 41);
   background-color: var(--color-brand);
 }
+
 </style>
