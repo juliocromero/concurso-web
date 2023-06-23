@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, onMounted, reactive, ref } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { VueEditor } from "vue3-editor";
 import pdftest from "../../public/anexo_III.pdf";
@@ -54,6 +54,8 @@ const user = reactive({
   otros_antecedente_laborales: "",
 });
 
+const isValidForm = ref(false)
+
 const emit = defineEmits(["noRegister"]);
 const params = useRoute();
 const isLogin = () => {
@@ -64,9 +66,9 @@ const isLogin = () => {
     emit("noRegister");
   }
 };
-const valid = ref({
+/* const valid = ref({
   form1: null,
-});
+}); */
 
 const tabs = ref(1);
 
@@ -82,21 +84,44 @@ const form = ref();
 user.id_concurso = parseInt(params.params.id);
 const userResult = reactive({});
 
-const validate = async () => {
-  const { valid } = await form.value.validate();
 
+
+const validate = async () => {  
+  const { valid } = await form.value.validate();
   if (valid) {
-    if (tabs.value < 5) tabs.value++;
+    if (tabs.value < 5) {
+      tabs.value++;
+      isValidForm.value = false
+    }
     if (tabs.value == 5) {
       userResult.value = await postInscription(user);
     }
   }
 };
+
+const blackForm = () => {
+  if(tabs.value > 0){
+    tabs.value--
+    isValidForm.value = true
+  }
+}
+
+
 const rulesEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 const { push } = useRouter();
 const toHome = () => {
   push("/concursos");
 };
+
+const validform = async () => {  
+  if(form.value.modelValue){
+    isValidForm.value = true
+  } else {
+    isValidForm.value = false
+  }
+}
+
+
 </script>
 <template>
   <v-container
@@ -105,12 +130,12 @@ const toHome = () => {
   >
     <v-btn class="mb-2" icon dark @click="toHome">
       <v-icon>mdi-arrow-left</v-icon>
+   
     </v-btn>
     <v-window v-model="tabs" v-if="tabs < 5">
-      <h1 class="text-center">{{ titleConcurso.data?.name }}</h1>
-
-      <v-window-item :value="1">
-        <v-form ref="form" v-model="validOne">
+      <h1 class="text-center">{{ titleConcurso.data?.name }} </h1>
+      <v-window-item :value="1"  >
+        <v-form ref="form" v-model="validOne" v-if="tabs == 1" @input="validform()">
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
@@ -179,8 +204,8 @@ const toHome = () => {
         </v-form>
       </v-window-item>
 
-      <v-window-item :value="2">
-        <v-form ref="form" v-model="validTwo">
+      <v-window-item :value="2" >
+        <v-form ref="form" v-model="validTwo" v-if="tabs == 2"  @input="validform()">
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
@@ -255,8 +280,8 @@ const toHome = () => {
       <!-- <v-window-item :value="3">
         <VueEditor v-model="text" />
       </v-window-item> -->
-      <v-window-item :value="3">
-        <v-form ref="form" v-model="validThree">
+      <v-window-item :value="3" >
+        <v-form ref="form" v-model="validThree" v-if="tabs == 3" @input="validform()">
           <v-row>
             <v-col cols="12" sm="6"
               ><v-select
@@ -317,7 +342,7 @@ const toHome = () => {
       </v-window-item>
 
       <v-window-item :value="4">
-        <v-form ref="form" v-model="validFour">
+        <v-form ref="form" v-model="validFour" v-if="tabs == 4" @input="validform()">
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
@@ -433,11 +458,11 @@ const toHome = () => {
 
     <div class="mt-4 d-flex justify-space-between" v-if="tabs < 5">
       <v-btn
-        @click="tabs > 1 ? tabs-- : tabs"
+        @click="blackForm()"
         :disabled="tabs == 1 ? true : false"
         >Atras</v-btn
       >
-      <v-btn @click="validate">Siguiente</v-btn>
+      <v-btn @click="validate" :color="isValidForm ? '#1a527c':''"  :class="isValidForm? 'color-text': ''" >Siguiente</v-btn>
     </div>
     <div v-else>
       <Pdf :result="userResult" :concurso="titleConcurso?.data" />

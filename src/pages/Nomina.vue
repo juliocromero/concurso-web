@@ -85,7 +85,7 @@ const toHome = ()=> {
 <div>
   <h2 class="text-center pt-4 pb-4"> <u>F4. FORMULARIO PUBLICACION DE LA NOMINA DE INSCRIPTOS</u></h2>
 </div>
-    <v-table v-if="nomina" fixed-header>
+    <v-table class="border-table" v-if="nomina" fixed-header>
       <tbody>
         <tr>
           <td class="color_t" colspan="4">
@@ -139,7 +139,7 @@ const toHome = ()=> {
         </tr>
       </tbody>
     </v-table>
-    <v-table>
+    <v-table class="border-table">
       <tbody>
         <tr>
           <td colspan="2" class="color_t">NOMBRE Y APELLIDO</td>
@@ -151,8 +151,8 @@ const toHome = ()=> {
         </tr>
       </tbody>
     </v-table>
-    <v-table fixed-header class="informacion-table" style="">
-      <tbody>
+    <v-table fixed-header class="informacion-table border-table" style="">
+      <tbody >
         <tr>
           <td colspan="4" class="color_t">SELECCIÓN Y EVALUACIÓN</td>
         </tr>
@@ -254,10 +254,16 @@ const toHome = ()=> {
 </template>
 
 
-<style>
+<style scoped>
 .color_t {
   color: rgb(41, 41, 41);
   background-color: var(--color-brand);
 }
 
+td{
+  text-align: center;
+}
+.border-table{
+  border: 1px solid var(--color-brand);
+}
 </style>
