@@ -100,7 +100,7 @@ const toHome = ()=> {
           <td width="20%" class="ancho33 center">
             EXPEDIENTE N° {{ nomina.expediente }}
           </td>
-          <td class="ancho33 center" colspan="3">D. SA N°   {{nomina.num_acto_adminstrativo}}</td>
+          <td class="ancho33 center" colspan="3">DSAYL N°RR   {{nomina.num_acto_adminstrativo}}</td>
         </tr>
         <tr>
           <td class="ancho33">TIPO DE CONCURSO</td>
@@ -165,7 +165,23 @@ const toHome = ()=> {
         <tr>
           <td>ENTREVISTA PERSONAL<br />(publicada en llamado)</td>
           <td>{{formateDate(nomina?.fecha_personal_jurado)}}</td>
-          <td> {{nomina?.hora_personal_jurado}}</td>
+          <td> {{nomina?.hora_personal_jurado}} hs.</td>
+          <td>
+            {{nomina?.lugar_entrevista_fecha1}}
+          </td>
+        </tr>
+         <tr>
+          <td>PRUEBA DE OPOSICIÒN EXAMEN ORAL Y/O ESCRITO<br />(primer llamado)</td>
+          <td>{{formateDate(nomina?.fecha1)}}</td>
+          <td> {{nomina?.hora_entrevista_fecha1}} hs.</td>
+          <td>
+            {{nomina?.lugar_entrevista_fecha1}}
+          </td>
+        </tr>
+         <tr>
+          <td>PRUEBA DE OPOSICION EXAMENL ORAL Y/O ESCRITO<br />(segundo llamado)</td>
+          <td>{{formateDate(nomina?.fecha2)}}</td>
+          <td> {{nomina?.hora_entrevista_fecha1}} hs.</td>
           <td>
             {{nomina?.lugar_entrevista_fecha1}}
           </td>

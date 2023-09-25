@@ -67,14 +67,6 @@ const itemsNav = ref([
           style="margin: 0 auto; width: 320px"
           id="logo-unsam-mob"
         >
-          <a href="/">
-            <img
-              src="/img/logo-UNSAM-40-democracia.jpg"
-              class="img"
-              alt="UNSAM"
-              border="0"
-            />
-          </a>
         </div>
         <div class="oculto-desktop" style="clear: both"></div>
         <div class="oculto-desktop"></div>

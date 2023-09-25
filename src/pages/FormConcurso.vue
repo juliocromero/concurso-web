@@ -13,12 +13,14 @@ import Pdf from "../components/concurso/Pdf.vue";
 const props = defineProps({ title: String, open: Boolean });
 const dialog = ref(props.open || false);
 
-const titleConcurso = reactive({});
+const titleConcurso = ref();
+const propsConcurso = reactive({})
 
 onMounted(async () => {
   const { params } = useRoute();
   const concursoOne = await getConcursoOne(params.id);
-  titleConcurso.data = concursoOne;
+  titleConcurso.value = concursoOne
+  propsConcurso.data = concursoOne
 });
 
 const user = reactive({
@@ -130,10 +132,11 @@ const validform = async () => {
   >
     <v-btn class="mb-2" icon dark @click="toHome">
       <v-icon>mdi-arrow-left</v-icon>
-   
     </v-btn>
+   
+    <h2 class="text-center mb-3" style="color:black" >Concurso N° {{titleConcurso?.numero}}  </h2>
     <v-window v-model="tabs" v-if="tabs < 5">
-      <h1 class="text-center">{{ titleConcurso.data?.name }} </h1>
+       
       <v-window-item :value="1"  >
         <v-form ref="form" v-model="validOne" v-if="tabs == 1" @input="validform()">
           <v-row>
@@ -421,7 +424,7 @@ const validform = async () => {
             <v-col cols="12" sm="6">
               <v-text-field
                 variant="solo"
-                v-model="user.otras_referencias"
+                v-model="user.otra_referencias"
                 :rules="[(referencias) => !!referencias || 'Es requerido']"
                 label="Otras referencias"
                 required
@@ -464,8 +467,9 @@ const validform = async () => {
       >
       <v-btn @click="validate" :color="isValidForm ? '#1a527c':''"  :class="isValidForm? 'color-text': ''" >Siguiente</v-btn>
     </div>
+    
     <div v-else>
-      <Pdf :result="userResult" :concurso="titleConcurso?.data" />
+      <Pdf :result="userResult" :concurso="propsConcurso?.data" />
     </div>
   </v-container>
 </template>

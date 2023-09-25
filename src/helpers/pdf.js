@@ -41,9 +41,10 @@ function createPdfAnexoIII(response, concurso) {
             { content: `D. SAD o RR N° ${concurso?.id_dependencia}`, colSpan: 0, styles: {} },
         ],
     ];
+    console.log(concurso)
     var rows = [
         ["DEPENDENCIA", concurso?.dependencias?.name],
-        ["CARGO", response?.cargo_ocupado],
+        ["CARGO", concurso?.denominacion_del_cargo],
         ["CATEGORÍA", response?.categoria]
     ];
     doc.autoTable({
@@ -72,39 +73,40 @@ function createPdfAnexoIV(response, concurso) {
     doc.setTextColor('black')
     doc.text('DECLARACIÓN JURADA', 105, 50, { align: "center" })
     doc.setFontSize(9)
-    doc.text('Por la presente declaro bajo juramento que:', 118, 60, { align: "right" })
-    doc.text('NO he incurrido en actos de fuerza contra el orden institucional y el sistema', 110, 65, { align: 'center' })
-    doc.text('democrático y/o en violaciones a los derechos humanos y/o terrorismo de Estado; aún', 110, 70, { align: 'center' })
-    doc.text('cuando me haya beneficiado por indulto o condonación de penas', 110, 75, { align: 'center' })
+    doc.text('Por la presente declaro bajo juramento que:', 10, 60)
+    doc.text('NO he incurrido en actos de fuerza contra el orden institucional y el sistema', 10, 65,)
+    doc.text('democrático y/o en violaciones a los derechos humanos y/o terrorismo de Estado; aún', 10, 70,)
+    doc.text('cuando me haya beneficiado por indulto o condonación de penas', 10, 75, )
 
-    doc.text('NO he sido condenado/a por delito doloso, hasta el cumplimiento de la pena', 110, 90, { align: 'center' })
-    doc.text('privativa de la libertad o el término previsto para la prescripción de la pena.', 110, 95, { align: 'center' })
+    doc.text('NO he sido condenado/a por delito doloso, hasta el cumplimiento de la pena', 10, 90 )
+    doc.text('privativa de la libertad o el término previsto para la prescripción de la pena.', 10, 95)
 
-    doc.text('NO he sido condenado/a por delito en perjuicio de cualquier Institución', 155, 105, { align: 'right' })
-    doc.text('Universitaria o de la Administración Pública Nacional, provincial o municipal, sus entes', 110, 110, { align: 'center' })
-    doc.text('descentralizados o figuras afines.', 73, 115, { align: 'center' })
+    doc.text('NO he sido condenado/a por delito en perjuicio de cualquier Institución', 10, 105,)
+    doc.text('Universitaria o de la Administración Pública Nacional, provincial o municipal, sus entes', 10, 110)
+    doc.text('descentralizados o figuras afines.', 10, 115)
 
-    doc.text('NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.', 151, 125, { align: 'right' })
+    doc.text('NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.', 10, 125,)
 
-    doc.text('NO me encuentro exonerado/a o declarado/a cesante de cualquier organismo', 110, 135, { align: 'center' })
-    doc.text('de los poderes públicos nacionales, provinciales o municipales, sus entes descentralizados', 110, 140, { align: 'center' })
-    doc.text('o figuras afines.', 110, 145, { align: 'center' })
+    doc.text('NO me encuentro exonerado/a o declarado/a cesante de cualquier organismo', 10, 135)
+    doc.text('de los poderes públicos nacionales, provinciales o municipales, sus entes descentralizados', 10, 140)
+    doc.text('o figuras afines.', 10, 145)
 
-    doc.text('Que he tomado conocimiento de las normas que rigen el presente llamado,', 108, 155, { align: 'center' })
-    doc.text('como así también las correspondientes a la UNIVERSIDAD y a la actividad No Docente.', 110, 160, { align: 'center' })
+    doc.text('Que he tomado conocimiento de las normas que rigen el presente llamado,', 10, 155,)
+    doc.text('como así también las correspondientes a la UNIVERSIDAD y a la actividad No Docente.', 10, 160,)
 
-    doc.text('Cualquier modificación de los datos consignados serán informados antes de la', 110, 170, { align: 'center' })
-    doc.text('entrevista con los Jurados y la prueba de oposición.', 110, 175, { align: 'center' })
+    doc.text('Cualquier modificación de los datos consignados serán informados antes de la', 10, 170,)
+    doc.text('entrevista con los Jurados y la prueba de oposición.', 10, 175,)
 
-    doc.text('Todos los datos consignados en las hojas de ........ a ........... son veraces y exactos.', 110, 185, { align: 'center' })
-    doc.text('Me notifico que cualquier falsedad, ocultamiento y omisión dará motivo a la exclusión directa.', 110, 190, { align: 'center' })
-    doc.text('de esta inscripción.', 110, 195, { align: 'center' })
+    doc.text('Todos los datos consignados en las hojas de ........ a ........... son veraces y exactos.', 10, 185, )
+    doc.text('Me notifico que cualquier falsedad, ocultamiento y omisión dará motivo a la exclusión directa.', 10, 190,)
+    doc.text('de esta inscripción.', 10, 195,)
 
 
     doc.save("Anexo_IV.pdf");
 };
 
 function createPdfAnexoV(response, concurso) {
+    console.log('ressssss', response)
     const doc = new jspdf.jsPDF();
     doc.text("Gerencia de Informatica", 130, 30);
     doc.addImage(Logo_UNSAM, "png", 10, 22, 50, 10);
@@ -210,48 +212,48 @@ function createPdfAnexoV(response, concurso) {
     //     theme: 'grid'
     // });
 
-    var columnsEducacion = [
-        [
-            {
-                content: `2- OTROS ESTUDIOS PERTINENTES A LAS FUNCIONES
-            (No comprendidos en el apartado anterior. Se podrán detallar cursos, seminarios, congresos, etc. De interés para el cargo)`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] }
-            },
-        ],
+    // var columnsEducacion = [
+    //     [
+    //         {
+    //             content: `2- OTROS ESTUDIOS PERTINENTES A LAS FUNCIONES
+    //         (No comprendidos en el apartado anterior. Se podrán detallar cursos, seminarios, congresos, etc. De interés para el cargo)`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] }
+    //         },
+    //     ],
 
-    ];
-    var rowsEducacion = [
-        [`1.- INSTITUCIÓN`, response?.institucion ],
+    // ];
+    // var rowsEducacion = [
+    //     [`1.- INSTITUCIÓN`, response?.institucion ],
 
-        [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso ],
-        [`FECHA DE EGRESO`, response?.fecha_ingreso ],
-        [`TÍTULO (si corresponde)`, response?.titulo]
-    ];
-    doc.autoTable({
-        startY: 90,
-        head: columnsEducacion,
-        body: rowsEducacion,
-        theme: 'grid'
-    });
+    //     [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso ],
+    //     [`FECHA DE EGRESO`, response?.fecha_ingreso ],
+    //     [`TÍTULO (si corresponde)`, response?.titulo]
+    // ];
+    // doc.autoTable({
+    //     startY: 90,
+    //     head: columnsEducacion,
+    //     body: rowsEducacion,
+    //     theme: 'grid'
+    // });
 
-    var columnsOtrosEstudios = [
-        [
-            { content: `3- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
-        ],
+    // var columnsOtrosEstudios = [
+    //     [
+    //         { content: `3- OTROS ESTUDIOS EN GENERAL`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+    //     ],
 
-    ];
-    var rowsOtrosEstudios = [
-        [`1.- INSTITUCIÓN`,  response?.institucion],
+    // ];
+    // var rowsOtrosEstudios = [
+    //     [`1.- INSTITUCIÓN`,  response?.institucion],
 
-        [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso],
-        [`FECHA DE EGRESO`, response?.fecha_ingreso],
-        [`TÍTULO (si corresponde)`,  response?.titulo]
-    ];
-    doc.autoTable({
-        startY: 140,
-        head: columnsOtrosEstudios,
-        body: rowsOtrosEstudios,
-        theme: 'grid'
-    });
+    //     [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso],
+    //     [`FECHA DE EGRESO`, response?.fecha_ingreso],
+    //     [`TÍTULO (si corresponde)`,  response?.titulo]
+    // ];
+    // doc.autoTable({
+    //     startY: 140,
+    //     head: columnsOtrosEstudios,
+    //     body: rowsOtrosEstudios,
+    //     theme: 'grid'
+    // });
 
     var columnsAntecedentesLaborales = [
         [
@@ -260,7 +262,7 @@ function createPdfAnexoV(response, concurso) {
             `, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
         [
-            { content: `1 - AFINES AL CARGO`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
+            { content: `2 - AFINES AL CARGO`, colSpan: 2, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
@@ -275,28 +277,24 @@ function createPdfAnexoV(response, concurso) {
         [`EVALUACIONES DE DESEMPEÑO
         (detallar años y calificación)`, response?.eva_desempe_o],
         [`OTRAS REFERENCIAS QUE
-        CONSIDERE PERTINENTE`, response?.otros_antecedente_laborales]
+        CONSIDERE PERTINENTE`, response?.otra_referencias]
     ];
+   
     doc.autoTable({
-        startY: 200,
+        startY: 70,
         head: columnsAntecedentesLaborales,
         body: rowsAntecedentesLaborales,
         theme: 'grid'
     });
-    doc.addPage('a0 - a10')
-    doc.text("Gerencia de Informatica", 130, 30);
-    doc.addImage(Logo_UNSAM, "png", 10, 22, 50, 10);
-    doc.line(10, 35, 200, 35);
-
     var columnsAntecedentesLaboralesOtros = [
         [
-            { content: `2 - OTROS ANTECEDENTES EN LA INSTITUCIÓN 
+            { content: `2 - ANTECEDENTE LABORALES 
             (por orden de antigüedad primero los más recientes)`, colSpan: 1, styles: { halign: 'center', fillColor: [22, 160, 133] } },
         ],
 
     ];
     var rowsAntecedentesLaborales = [
-        [response?.otros_antecedente_laborales ? response?.otros_antecedente_laborales : `.................................................................................................................................
+        [response?.antec_laborales ? response?.antec_laborales : `.................................................................................................................................
         ................................................................................................................................
         ................................................................................................................................
         ................................................................................................................................
@@ -311,16 +309,21 @@ function createPdfAnexoV(response, concurso) {
         ...............................................................................................................................`],
     ];
     doc.autoTable({
-        startY: 40,
+        startY: 160,
         head: columnsAntecedentesLaboralesOtros,
         body: rowsAntecedentesLaborales,
         theme: 'grid'
     });
-    doc.text('(Se agradece completar en letra clara y mayúscula, después de completar la planilla numerar', 20 ,140)
-    doc.text('todas las hojas y firmarlas antes de su presentación)', 20 ,145)
-    doc.text('El presente formulario tiene carácter de Declaración Jurada.', 20 ,150)
+    // doc.addPage('a0 - a10')
+    // doc.text("Gerencia de Informatica", 130, 30);
+    // doc.addImage(Logo_UNSAM, "png", 10, 22, 50, 10);
+    // doc.line(10, 35, 200, 35);
+    doc.text('(Se agradece completar en letra clara y mayúscula, después de completar la planilla numerar', 20 ,270)
+    doc.text('todas las hojas y firmarlas antes de su presentación)', 20 ,275)
+    doc.text('El presente formulario tiene carácter de Declaración Jurada.', 20 ,280)
+    
+  
 
     doc.save("Anexo_V.pdf");
 };
-
 export { createPdfAnexoIII, createPdfAnexoIV, createPdfAnexoV }

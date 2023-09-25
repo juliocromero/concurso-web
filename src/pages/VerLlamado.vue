@@ -399,100 +399,57 @@ const formateDate = (value) => {
           <tr>
             <div class="d-flex">
               <td>
+                
                 <p class="text-center">
                   El puntaje máximo de evaluación será de 100 puntos, los que
                   serán asignados conforme los siguientes criterios:
                 </p>
-              </td>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <b>EVALUACIÓN DE ANTECEDENTES:</b> Puntaje máximo del
+                <div class="d-flex" style="margin: 6px">
+                   <b>EVALUACIÓN DE ANTECEDENTES:</b> Puntaje máximo del
                   componente 50 puntos.<br />
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
+                </div>
+                <div class="d-flex" style="margin: 6px">
                   <p>Antigüedad: puntaje máximo del subcomponente 20 puntos.</p>
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <p>
+                </div>
+                <div class="d-flex" style="margin: 6px">
+                   <p>
                     Titulo y estudios formales realizados: puntaje máximo del
                     subcomponente 20 puntos.
                   </p>
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <p>
+                </div>
+                  
+                  <div class="d-flex" style="margin: 6px">
+                     <p>
                     Saberes formales e informales que hacen a la función:
                     puntaje máximo del subcomponente 5 puntos.
                   </p>
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <p>
+                  </div>
+                  <div class="d-flex" style="margin: 6px">
+                     <p>
                     Categoría de revista: puntaje máximo del subcomponente 5
                     puntos.
                   </p>
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <b>PRUEBA DE OPOSICIÓN Y ENTREVISTA PERSONAL</b> Puntaje
+                  </div>
+                  <div class="d-flex" style="margin: 6px">
+                    <b>PRUEBA DE OPOSICIÓN Y ENTREVISTA PERSONAL</b> Puntaje
                   máximo del componente 50 puntos.<br />
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <p>
-                    Prueba de oposición: puntaje máximo del subcomponente 40
+                   
+                  </div>
+                  <div class="d-flex" style="margin: 6px">
+                    <p>
+                      Prueba de oposición: puntaje máximo del subcomponente 40
                     puntos.
                   </p>
-                </td>
-              </tr>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex">
-              <tr>
-                <td>
-                  <p>
+                  </div>
+                   <div class="d-flex" style="margin: 6px">
+                     <p>
                     Entrevista personal: puntaje máximo del subcomponente 10
                     puntos.
                   </p>
-                </td>
-              </tr>
+                   </div>
+                    
+                  
+              </td>
             </div>
           </tr>
           <tr>
@@ -550,19 +507,27 @@ const formateDate = (value) => {
           <tr>
             <div class="d-flex">
               <td>
-                <p class="text-center pa-2">
+                <p class="text-center pa-2" style="color:blue">
                   Para requerir más información comunicarse con la Coordinacion
                   de Asuntos No Docentes, dias hábiles de 11:00 a 16:00hs. Sita
                   en la calle
                   <br />
                   Yapeyú N° 2068, San Martin , Pcia. de Bs. As. TE:(011)
                   45807274 o a asuntosnodocentes@unsam.edu.ar<br />
+                </p>
+              </td>
+            </div>
+          </tr>
+          <tr>
+            <div class="d-flex">
+              <td>
+                <b class="text-center pa-2">
                   Casilla de correo electrónico institucional en el que se
                   recibirán las impugnaciones al concurso:<br />
                   <a href="mailto:capitalhumano@unsam.edu.ar">
                     capitalhumano@unsam.edu.ar</a
                   >
-                </p>
+                </b>
               </td>
             </div>
           </tr>
