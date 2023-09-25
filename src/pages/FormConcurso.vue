@@ -14,13 +14,13 @@ const props = defineProps({ title: String, open: Boolean });
 const dialog = ref(props.open || false);
 
 const titleConcurso = ref();
-const propsConcurso = reactive({})
+const propsConcurso = reactive({});
 
 onMounted(async () => {
   const { params } = useRoute();
   const concursoOne = await getConcursoOne(params.id);
-  titleConcurso.value = concursoOne
-  propsConcurso.data = concursoOne
+  titleConcurso.value = concursoOne;
+  propsConcurso.data = concursoOne;
 });
 
 const user = reactive({
@@ -36,13 +36,17 @@ const user = reactive({
   depto: "",
   cod_postal: "",
   localidad: "",
-  educacion: "",
-  institucion: "",
-  titulo: "",
-  fecha_ingreso: "",
-  dur_curso: "",
-  id_concurso: "",
+  formacion: [
+    {
+      educacion: "",
+      titulo: "",
+      fecha_ingreso: "",
+      institucion: "",
+      dur_curso: "",
+    },
+  ],
 
+  id_concurso: "",
   antec_laborales: "",
   cargo_ocupado: "",
   categoria: "1",
@@ -56,7 +60,7 @@ const user = reactive({
   otros_antecedente_laborales: "",
 });
 
-const isValidForm = ref(false)
+const isValidForm = ref(false);
 
 const emit = defineEmits(["noRegister"]);
 const params = useRoute();
@@ -86,14 +90,12 @@ const form = ref();
 user.id_concurso = parseInt(params.params.id);
 const userResult = reactive({});
 
-
-
-const validate = async () => {  
+const validate = async () => {
   const { valid } = await form.value.validate();
   if (valid) {
     if (tabs.value < 5) {
       tabs.value++;
-      isValidForm.value = false
+      isValidForm.value = false;
     }
     if (tabs.value == 5) {
       userResult.value = await postInscription(user);
@@ -102,12 +104,11 @@ const validate = async () => {
 };
 
 const blackForm = () => {
-  if(tabs.value > 0){
-    tabs.value--
-    isValidForm.value = true
+  if (tabs.value > 0) {
+    tabs.value--;
+    isValidForm.value = true;
   }
-}
-
+};
 
 const rulesEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 const { push } = useRouter();
@@ -115,15 +116,32 @@ const toHome = () => {
   push("/concursos");
 };
 
-const validform = async () => {  
-  if(form.value.modelValue){
-    isValidForm.value = true
+const validform = async () => {
+  if (form.value.modelValue) {
+    isValidForm.value = true;
   } else {
-    isValidForm.value = false
+    isValidForm.value = false;
   }
-}
+};
 
+const addFormacion = () => {
+  validate();
+  
+  if (isValidForm.value) {
+    user.formacion.push({
+      educacion: "",
+      titulo: "",
+      fecha_ingreso: "",
+      institucion: "",
+      dur_curso: "",
+    });
+  }
+};
 
+const removeFormation = index => {
+  console.log(index);
+  user.formacion.splice(index, 1);
+};
 </script>
 <template>
   <v-container
@@ -133,12 +151,18 @@ const validform = async () => {
     <v-btn class="mb-2" icon dark @click="toHome">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
-   
-    <h2 class="text-center mb-3" style="color:black" >Concurso N° {{titleConcurso?.numero}}  </h2>
+
+    <h2 class="text-center mb-3" style="color: black">
+      Concurso N° {{ titleConcurso?.numero }}
+    </h2>
     <v-window v-model="tabs" v-if="tabs < 5">
-       
-      <v-window-item :value="1"  >
-        <v-form ref="form" v-model="validOne" v-if="tabs == 1" @input="validform()">
+      <v-window-item :value="1">
+        <v-form
+          ref="form"
+          v-model="validOne"
+          v-if="tabs == 1"
+          @input="validform()"
+        >
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
@@ -146,7 +170,7 @@ const validform = async () => {
                 v-model="user.name"
                 :counter="30"
                 label="Nombre"
-                :rules="[(name) => !!name || 'Es requerido']"
+                :rules="[name => !!name || 'Es requerido']"
                 required
               ></v-text-field>
             </v-col>
@@ -154,7 +178,7 @@ const validform = async () => {
               <v-text-field
                 v-model="user.apellido"
                 :counter="30"
-                :rules="[(apellido) => !!apellido || 'Es requerido']"
+                :rules="[apellido => !!apellido || 'Es requerido']"
                 label="Apellido"
                 variant="solo"
                 required
@@ -164,7 +188,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.email"
-                :rules="[(email) => rulesEmail.test(email) || 'Email Invalido']"
+                :rules="[email => rulesEmail.test(email) || 'Email Invalido']"
                 label="Email"
                 required
               ></v-text-field
@@ -174,8 +198,8 @@ const validform = async () => {
                 variant="solo"
                 v-model="user.dni"
                 :rules="[
-                  (dni) => !!dni || 'Es requerido',
-                  (dni) => dni.length < 9 || 'DNI invalido',
+                  dni => !!dni || 'Es requerido',
+                  dni => dni.length < 9 || 'DNI invalido',
                 ]"
                 label="DNI"
                 required
@@ -192,14 +216,14 @@ const validform = async () => {
                 name="trip-start"
                 min="01/01/1940"
                 required
-                :rules="[(fecha_nac) => !!fecha_nac || 'Es requerido']"
+                :rules="[fecha_nac => !!fecha_nac || 'Es requerido']"
               ></v-text-field
             ></v-col>
             <v-col cols="12" sm="12">
               <v-text-field
                 variant="solo"
                 v-model="user.telefono"
-                :rules="[(telefono) => !!telefono || 'Es requerido']"
+                :rules="[telefono => !!telefono || 'Es requerido']"
                 label="Telefono"
               ></v-text-field
             ></v-col>
@@ -207,14 +231,19 @@ const validform = async () => {
         </v-form>
       </v-window-item>
 
-      <v-window-item :value="2" >
-        <v-form ref="form" v-model="validTwo" v-if="tabs == 2"  @input="validform()">
+      <v-window-item :value="2">
+        <v-form
+          ref="form"
+          v-model="validTwo"
+          v-if="tabs == 2"
+          @input="validform()"
+        >
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
                 variant="solo"
                 v-model="user.calle"
-                :rules="[(calle) => !!calle || 'Es requerido']"
+                :rules="[calle => !!calle || 'Es requerido']"
                 label="Calle"
                 required
               ></v-text-field>
@@ -223,7 +252,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.numero"
-                :rules="[(numerodecalle) => !!numerodecalle || 'Es requerido']"
+                :rules="[numerodecalle => !!numerodecalle || 'Es requerido']"
                 label="Numero"
                 required
                 type="number"
@@ -233,7 +262,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.piso"
-                :rules="[(piso) => !!piso || 'Es requerido']"
+                :rules="[piso => !!piso || 'Es requerido']"
                 label="Piso"
                 required
                 type="number"
@@ -243,7 +272,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.depto"
-                :rules="[(depto) => !!depto || 'Es requerido']"
+                :rules="[depto => !!depto || 'Es requerido']"
                 label="Depto"
                 required
               ></v-text-field>
@@ -252,7 +281,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.cod_postal"
-                :rules="[(postal) => !!postal || 'Es requerido']"
+                :rules="[postal => !!postal || 'Es requerido']"
                 label="Codigo Postal"
                 required
                 type="number"
@@ -262,7 +291,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.localidad"
-                :rules="[(localidad) => !!localidad || 'Es requerido']"
+                :rules="[localidad => !!localidad || 'Es requerido']"
                 label="Localidad"
                 required
               ></v-text-field>
@@ -283,75 +312,102 @@ const validform = async () => {
       <!-- <v-window-item :value="3">
         <VueEditor v-model="text" />
       </v-window-item> -->
-      <v-window-item :value="3" >
-        <v-form ref="form" v-model="validThree" v-if="tabs == 3" @input="validform()">
-          <v-row>
-            <v-col cols="12" sm="6"
-              ><v-select
-                variant="solo"
-                v-model="user.educacion"
-                label="Educacion"
-                :items="[
-                  'Primaria',
-                  'Secundaria',
-                  'Terciario',
-                  'Universitario',
-                ]"
-              ></v-select
-            ></v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                variant="solo"
-                v-model="user.titulo"
-                :rules="[(titulo) => !!titulo || 'Es requerido']"
-                label="Titulo"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                variant="solo"
-                v-model="user.institucion"
-                :rules="[(institucion) => !!institucion || 'Es requerido']"
-                label="Institucion"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                variant="solo"
-                v-model="user.fecha_ingreso"
-                label="Fecha de Egreso"
-                min="1920-12-01"
-                type="date"
-                pattern="\d{4}-\d{2}-\d{2}"
-                required
-                :rules="[
-                  (fechaDeEgreso) => !!fechaDeEgreso || 'Es requerido',
-                ]"
-              ></v-text-field
-            ></v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                variant="solo"
-                v-model="user.dur_curso"
-                :rules="[(duracionCurso) => !!duracionCurso || 'Es requerido']"
-                label="Duracion curso"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
+      <v-window-item :value="1">
+        <v-form
+          ref="form"
+          v-model="validThree"
+          v-if="tabs == 1"
+          @input="validform()"
+        >
+          <div
+            class="container-formation"
+            v-for="(item, index) in user.formacion"
+          >
+            <v-btn
+              :disabled="!(user.formacion.length > 1)"
+              class="borrar_formacion ma-2"
+              @click="removeFormation(index)"
+              icon="mdi-delete-outline"
+              color="red"
+            ></v-btn>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-select
+                  variant="solo"
+                  v-model="item.educacion"
+                  label="Educacion"
+                  :items="[
+                    'Primaria',
+                    'Secundaria',
+                    'Terciario',
+                    'Universitario',
+                  ]"
+                ></v-select
+              ></v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  variant="solo"
+                  v-model="item.titulo"
+                  :rules="[titulo => !!titulo || 'Es requerido']"
+                  label="Titulo"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  variant="solo"
+                  v-model="item.institucion"
+                  :rules="[institucion => !!institucion || 'Es requerido']"
+                  label="Institucion"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  variant="solo"
+                  v-model="item.fecha_ingreso"
+                  label="Fecha de Egreso"
+                  min="1920-12-01"
+                  type="date"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  required
+                  :rules="[fechaDeEgreso => !!fechaDeEgreso || 'Es requerido']"
+                ></v-text-field
+              ></v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  variant="solo"
+                  v-model="item.dur_curso"
+                  :rules="[duracionCurso => !!duracionCurso || 'Es requerido']"
+                  label="Duracion curso"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-divider></v-divider>
+            </v-row>
+          </div>
+          <div>
+            <v-btn block color="green" @click="addFormacion"
+              >Agregar Formacion</v-btn
+            >
+          </div>
         </v-form>
       </v-window-item>
 
       <v-window-item :value="4">
-        <v-form ref="form" v-model="validFour" v-if="tabs == 4" @input="validform()">
+        <v-form
+          ref="form"
+          v-model="validFour"
+          v-if="tabs == 4"
+          @input="validform()"
+        >
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field
                 variant="solo"
                 v-model="user.cargo_ocupado"
-                :rules="[(cargo) => !!cargo || 'Es requerido']"
+                :rules="[cargo => !!cargo || 'Es requerido']"
                 label="Cargo ocupado"
                 required
               ></v-text-field>
@@ -361,7 +417,7 @@ const validform = async () => {
                 variant="solo"
                 v-model="user.categoria"
                 type="number"
-                :rules="[(categoria) => !!categoria || 'Es requerido']"
+                :rules="[categoria => !!categoria || 'Es requerido']"
                 label="Categoría"
                 required
               ></v-text-field>
@@ -370,7 +426,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.agrupamiento"
-                :rules="[(agrupamiento) => !!agrupamiento || 'Es requerido']"
+                :rules="[agrupamiento => !!agrupamiento || 'Es requerido']"
                 label="Agrupamiento"
                 required
               ></v-text-field>
@@ -379,7 +435,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.per_desempeño"
-                :rules="[(desempeño) => !!desempeño || 'Es requerido']"
+                :rules="[desempeño => !!desempeño || 'Es requerido']"
                 label="Período desempeño"
                 required
               ></v-text-field>
@@ -388,7 +444,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.persona_a_cargo"
-                :rules="[(cargo) => !!cargo || 'Es requerido']"
+                :rules="[cargo => !!cargo || 'Es requerido']"
                 type="number"
                 label="Personal a cargo"
                 required
@@ -398,7 +454,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.eva_desempeño"
-                :rules="[(desempeño) => !!desempeño || 'Es requerido']"
+                :rules="[desempeño => !!desempeño || 'Es requerido']"
                 label="Evaluación desempeño"
                 required
               ></v-text-field>
@@ -407,7 +463,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.lic_con_o_sin_gose_de_sueldo"
-                :rules="[(sueldo) => !!sueldo || 'Es requerido']"
+                :rules="[sueldo => !!sueldo || 'Es requerido']"
                 label="Licencias con y sin goce de sueldo"
                 required
               ></v-text-field>
@@ -416,7 +472,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.sanciones"
-                :rules="[(sanciones) => !!sanciones || 'Es requerido']"
+                :rules="[sanciones => !!sanciones || 'Es requerido']"
                 label="Sanciones"
                 required
               ></v-text-field>
@@ -425,7 +481,7 @@ const validform = async () => {
               <v-text-field
                 variant="solo"
                 v-model="user.otra_referencias"
-                :rules="[(referencias) => !!referencias || 'Es requerido']"
+                :rules="[referencias => !!referencias || 'Es requerido']"
                 label="Otras referencias"
                 required
               ></v-text-field>
@@ -435,7 +491,7 @@ const validform = async () => {
                 variant="solo"
                 v-model="user.antec_laborales"
                 :rules="[
-                  (antecedentesLaborales) =>
+                  antecedentesLaborales =>
                     !!antecedentesLaborales || 'Es requerido',
                 ]"
                 label="antecedentes laborales"
@@ -447,7 +503,7 @@ const validform = async () => {
                 variant="solo"
                 v-model="user.otros_antecedente_laborales"
                 :rules="[
-                  (antecedentesLaborales) =>
+                  antecedentesLaborales =>
                     !!antecedentesLaborales || 'Es requerido',
                 ]"
                 label="Otros antecedentes laborales"
@@ -460,19 +516,35 @@ const validform = async () => {
     </v-window>
 
     <div class="mt-4 d-flex justify-space-between" v-if="tabs < 5">
-      <v-btn
-        @click="blackForm()"
-        :disabled="tabs == 1 ? true : false"
+      <v-btn @click="blackForm()" :disabled="tabs == 1 ? true : false"
         >Atras</v-btn
       >
-      <v-btn @click="validate" :color="isValidForm ? '#1a527c':''"  :class="isValidForm? 'color-text': ''" >Siguiente</v-btn>
+      <v-btn
+        @click="validate"
+        :color="isValidForm ? '#1a527c' : ''"
+        :class="isValidForm ? 'color-text' : ''"
+        >Siguiente</v-btn
+      >
     </div>
-    
+
     <div v-else>
       <Pdf :result="userResult" :concurso="propsConcurso?.data" />
     </div>
   </v-container>
 </template>
+
+<style scoped>
+.container-formation {
+  position: relative;
+}
+.borrar_formacion {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 50px;
+  padding: 10px;
+}
+</style>
 
 <style>
 .container-form {

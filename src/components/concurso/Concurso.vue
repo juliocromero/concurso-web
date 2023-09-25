@@ -176,7 +176,7 @@ const verLlamado = (id) => {
     </v-card-text >
     </div> -->
 
-    <div v-if="!disabled" class="d-flex justify-space-between pa-2">
+    <div v-if="!disabled" class="d-flex justify-space-between pa-2 gap-2">
       <button
         block
         variant="flat"
@@ -189,7 +189,7 @@ const verLlamado = (id) => {
       >
         VER LLAMADO
       </button>
-      <!-- <button
+      <button
         block
         variant="flat"
         color=""
@@ -199,7 +199,7 @@ const verLlamado = (id) => {
         :disabled="disabled"
       >
         INSCRIBIRSE
-      </button> -->
+      </button>
     </div>
     <div v-if="disabled" class="d-flex justify-space-between pa-2">
       <button
@@ -218,6 +218,9 @@ const verLlamado = (id) => {
 </template>
 
 <style scoped>
+.gap-2{
+  gap: 10px;
+}
 .content_concursos {
   overflow: auto;
 }
