@@ -312,11 +312,11 @@ const removeFormation = index => {
       <!-- <v-window-item :value="3">
         <VueEditor v-model="text" />
       </v-window-item> -->
-      <v-window-item :value="1">
+      <v-window-item :value="3">
         <v-form
           ref="form"
           v-model="validThree"
-          v-if="tabs == 1"
+          v-if="tabs == 3"
           @input="validform()"
         >
           <div
