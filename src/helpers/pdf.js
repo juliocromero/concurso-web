@@ -1,5 +1,18 @@
 import Logo_UNSAM from "../assets/logo.png";
 
+function formatDate(fecha){
+  if(fecha){
+    let partesFecha = fecha.split("-");
+    let ani = partesFecha[0];
+    let mes = partesFecha[1];
+    let dia = partesFecha[2];
+    return `${dia}-${mes}-${ani}`
+  }else {
+    return fecha
+  }
+  
+}
+
 function createPdfAnexoIII(response, concurso) {
   const doc = new jspdf.jsPDF();
   doc.text("Gerencia de Informatica", 130, 30);
@@ -46,7 +59,6 @@ function createPdfAnexoIII(response, concurso) {
       },
     ],
   ];
-  console.log(concurso);
   var rows = [
     ["DEPENDENCIA", concurso?.dependencias?.name],
     ["CARGO", concurso?.denominacion_del_cargo],
@@ -208,7 +220,7 @@ function createPdfAnexoV(response, concurso) {
   var rowsDatosPersonales = [
     ["APELLIDO/S", response?.apellido],
     ["NOMBRE/S", response?.name],
-    ["FECHA DE NACIMIENTO", response?.fecha_nac],
+    ["FECHA DE NACIMIENTO", formatDate(response?.fecha_nac)],
     ["TIPO Y N° DE DOCUMENTO", response?.dni],
     [
       "DOMICILIO a los fines del concurso",
@@ -253,30 +265,35 @@ function createPdfAnexoV(response, concurso) {
       },
     ],
   ];
-  var rowsAntecedentes = [
-    [
-      `TÍTULO AFÍN AL CARGO (según
-            requisito del concurso)`,
-      response?.titulo,
-    ],
-    ["INSTITUCIÓN", response?.institucion],
-    [
-      `FECHA DE EGRESO (en caso de no
-            haber alcanzado el nivel completo, indicando`,
-      response?.fecha_ingreso,
-    ],
+  let finAlCargo = response.aspirante_formacion.filter(
+    e => e.educacion == "Titulo a fin al cargo"
+  );
+  finAlCargo.map(e => {
+    var rowsAntecedentes = [
+      [
+        `TÍTULO AFÍN AL CARGO (según
+              requisito del concurso)`,
+        e?.titulo,
+      ],
+      ["INSTITUCIÓN", e?.institucion],
+      [
+        `FECHA DE EGRESO (en caso de no
+              haber alcanzado el nivel completo, indicando`,
+              formatDate(e?.fecha_ingreso),
+      ],
 
-    [
-      `cantidad de años cursados y cantidad de
-        materias)`,
-      response?.dur_curso,
-    ],
-  ];
-  doc.autoTable({
-    startY: 170,
-    head: columnsAntecedentes,
-    body: rowsAntecedentes,
-    theme: "grid",
+      [
+        `cantidad de años cursados y cantidad de
+          materias)`,
+        e?.dur_curso,
+      ],
+    ];
+    doc.autoTable({
+      startY: 170,
+      head: columnsAntecedentes,
+      body: rowsAntecedentes,
+      theme: "grid",
+    });
   });
 
   doc.addPage("a0 - a10");
@@ -295,27 +312,33 @@ function createPdfAnexoV(response, concurso) {
     ],
   ];
 
-  let formacion = response?.aspirante_formacion.flatMap((formation, index) => {
-    
+  let educacionFormal = response?.aspirante_formacion.filter(
+    e =>
+      e.educacion != "Otros Estudios Pertinentes a la funciones" &&
+      e.educacion != "Titulo a fin al cargo"
+  );
+  
+  let formacion = educacionFormal.flatMap((formation, index) => {
     let data = [
       [`${index + 1}.- TÍTULO`, formation.titulo],
+      [`EDUCACIÓN`, formation.educacion],
       [`INSTITUCIÓN`, formation.institucion],
-      [`FECHA DE EGRESO`, formation.fecha_ingreso],
+      [`FECHA DE EGRESO`, formatDate(formation.fecha_ingreso)],
     ];
-    return data
+    return data;
   });
 
   var rowsEducacion = [
     [`1.- TÍTULO`, response?.educacion],
     [`INSTITUCIÓN`, response?.institucion],
-    [`FECHA DE EGRESO`, response?.fecha_ingreso],
+    [`FECHA DE EGRESO`, formatDate(response?.fecha_ingreso)],
   ];
   doc.autoTable({
     startY: 50,
     head: columnsEducacion,
     body: formacion,
     theme: "grid",
-  }); 
+  });
   /* for (const [index, item] of formacion) {
     console.log(index, item)
     doc.autoTable({
@@ -325,7 +348,6 @@ function createPdfAnexoV(response, concurso) {
         theme: "grid",
       });    
   } */
-  
 
   var columnsEducacion = [
     [
@@ -337,20 +359,47 @@ function createPdfAnexoV(response, concurso) {
       },
     ],
   ];
+
+  let otrosEstudios = response.aspirante_formacion.filter(
+    e => e.educacion == "Otros Estudios Pertinentes a la funciones"
+  );
+  let formacionPertinentes = otrosEstudios.flatMap((formation, index) => {
+    let data = [
+      [`${index + 1}.- TÍTULO`, formation.titulo],
+      [`EDUCACIÓN`, formation.educacion],
+      [`INSTITUCIÓN`, formation.institucion],
+      [`FECHA DE EGRESO`, formatDate(formation?.fecha_ingreso)],
+    ];
+    return data;
+  });
+
   var rowsEducacion = [
-    [`1.- INSTITUCIÓN`, response?.institucion],
-
-    [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso],
-    [`FECHA DE EGRESO`, response?.fecha_ingreso],
-    [`TÍTULO (si corresponde)`, response?.titulo],
+    [`1.- TÍTULO`, response?.educacion],
+    [`INSTITUCIÓN`, response?.institucion],
+    [`FECHA DE EGRESO`, formatDate(response?.fecha_ingreso)],
   ];
-  
-
   doc.autoTable({
     head: columnsEducacion,
-    body: rowsEducacion,
+    body: formacionPertinentes,
     theme: "grid",
   });
+  /* otrosEstudios.map(e => {
+    var rowsEducacion = [
+      [`1.- INSTITUCIÓN`, e?.institucion],
+  
+      [`DURACIÓN DE LOS ESTUDIOS`, e?.dur_curso],
+      [`FECHA DE EGRESO`, e?.fecha_ingreso],
+      [`TÍTULO (si corresponde)`, e?.titulo],
+    ];
+  
+    doc.autoTable({
+      head: columnsEducacion,
+      body: rowsEducacion,
+      theme: "grid",
+    });
+
+  }) */
+  
 
   var columnsOtrosEstudios = [
     [
@@ -362,11 +411,11 @@ function createPdfAnexoV(response, concurso) {
     ],
   ];
   var rowsOtrosEstudios = [
-    [`1.- INSTITUCIÓN`, response?.institucion],
+    [`1.- INSTITUCIÓN`, '...'],
 
-    [`DURACIÓN DE LOS ESTUDIOS`, response?.dur_curso],
-    [`FECHA DE EGRESO`, response?.fecha_ingreso],
-    [`TÍTULO (si corresponde)`, response?.titulo],
+    [`DURACIÓN DE LOS ESTUDIOS`, '...'],
+    [`FECHA DE EGRESO`, '...'],
+    [`TÍTULO (si corresponde)`, '...'],
   ];
   doc.autoTable({
     head: columnsOtrosEstudios,

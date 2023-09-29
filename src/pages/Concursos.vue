@@ -2,6 +2,8 @@
 import ConcursoContainer from "../components/concurso/ConcursoContainer.vue";
 import logo from "../assets/logo.png";
 import { createPdfAnexoIII, createPdfAnexoIV, createPdfAnexoV } from "../helpers/pdf";
+
+
 </script>
 
 <template>

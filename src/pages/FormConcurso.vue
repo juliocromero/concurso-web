@@ -1,5 +1,12 @@
 <script setup>
-import { getCurrentInstance, onMounted, reactive, ref, watch } from "vue";
+import {
+  computed,
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { VueEditor } from "vue3-editor";
 import pdftest from "../../public/anexo_III.pdf";
@@ -38,7 +45,16 @@ const user = reactive({
   localidad: "",
   formacion: [
     {
-      educacion: "",
+      id_edu: 1,
+      educacion: "Titulo a fin al cargo",
+      titulo: "",
+      fecha_ingreso: "",
+      institucion: "",
+      dur_curso: "",
+    },
+    {
+      id_edu: 2,
+      educacion: "Otros Estudios Pertinentes a la funciones",
       titulo: "",
       fecha_ingreso: "",
       institucion: "",
@@ -58,6 +74,16 @@ const user = reactive({
   sanciones: "",
   otras_referencias: "",
   otros_antecedente_laborales: "",
+});
+
+const arrayTitulosACARGO = computed(() => {
+  return user.formacion.filter(e => e.educacion == "Titulo a fin al cargo");
+});
+
+const arrayOtrosEstudios = computed(() => {
+  return user.formacion.filter(
+    e => e.educacion == "Otros Estudios Pertinentes a la funciones"
+  );
 });
 
 const isValidForm = ref(false);
@@ -82,6 +108,17 @@ const validOne = ref();
 const validTwo = ref();
 const validThree = ref();
 const validFour = ref();
+const validFive = ref();
+const educacionFormal = ref([
+  {
+    id_edu: 3,
+    educacion: "",
+    titulo: "",
+    fecha_ingreso: "",
+    institucion: "",
+    dur_curso: "",
+  },
+]);
 
 const { refs } = getCurrentInstance();
 
@@ -93,11 +130,21 @@ const userResult = reactive({});
 const validate = async () => {
   const { valid } = await form.value.validate();
   if (valid) {
-    if (tabs.value < 5) {
+    if (tabs.value < 7) {
       tabs.value++;
       isValidForm.value = false;
     }
-    if (tabs.value == 5) {
+    if (tabs.value == 7) {
+      user.formacion.push(...educacionFormal.value);
+      user.formacion = user.formacion.map(e => {
+        return {
+          educacion: e.educacion,
+          titulo: e.titulo,
+          fecha_ingreso: e.fecha_ingreso,
+          institucion: e.institucion,
+          dur_curso: e.dur_curso,
+        };
+      });
       userResult.value = await postInscription(user);
     }
   }
@@ -124,12 +171,13 @@ const validform = async () => {
   }
 };
 
-const addFormacion = () => {
+const addFormacion = value => {
   validate();
-  
+
   if (isValidForm.value) {
     user.formacion.push({
-      educacion: "",
+      id_edu: crypto.randomUUID(),
+      educacion: value,
       titulo: "",
       fecha_ingreso: "",
       institucion: "",
@@ -138,9 +186,59 @@ const addFormacion = () => {
   }
 };
 
-const removeFormation = index => {
-  console.log(index);
-  user.formacion.splice(index, 1);
+const removeFormation = id => {
+  user.formacion = user.formacion.filter(edu => edu.id_edu !== id);
+};
+
+const addEducacion = (item, value) => {
+  item.educacion = value;
+};
+
+const addEducacionFormal = () => {
+  validate();
+
+  if (isValidForm.value) {
+    educacionFormal.value.push({
+      id_edu: crypto.randomUUID(),
+      educacion: "",
+      titulo: "",
+      fecha_ingreso: "",
+      institucion: "",
+      dur_curso: "",
+    });
+  }
+};
+const removeEducationFormal = id => {
+  educacionFormal.value = educacionFormal.value.filter(f => f.id_edu !== id);
+};
+
+const tipeEducation = index => {
+  let types = [
+    "Sin datos",
+    "Primaria",
+    "Secundaria",
+    "Terciario",
+    "Universitario",
+  ];
+  if (index == 0) {
+    return ["Sin datos", "Primaria", "Secundaria", "Terciario", "Universitario"];
+  }
+  return types;
+};
+
+const ifEsNinguno = value => {
+  if (value == "Sin datos") {
+    educacionFormal.value = [
+      {
+        id_edu: crypto.randomUUID(),
+        educacion: "Sin datos",
+        titulo: "",
+        fecha_ingreso: "",
+        institucion: "",
+        dur_curso: "",
+      },
+    ];
+  }
 };
 </script>
 <template>
@@ -155,7 +253,7 @@ const removeFormation = index => {
     <h2 class="text-center mb-3" style="color: black">
       Concurso N° {{ titleConcurso?.numero }}
     </h2>
-    <v-window v-model="tabs" v-if="tabs < 5">
+    <v-window v-model="tabs" v-if="tabs < 7">
       <v-window-item :value="1">
         <v-form
           ref="form"
@@ -321,29 +419,12 @@ const removeFormation = index => {
         >
           <div
             class="container-formation"
-            v-for="(item, index) in user.formacion"
+            v-for="(item, index) in arrayTitulosACARGO"
           >
-            <v-btn
-              :disabled="!(user.formacion.length > 1)"
-              class="borrar_formacion ma-2"
-              @click="removeFormation(index)"
-              icon="mdi-delete-outline"
-              color="red"
-            ></v-btn>
             <v-row>
-              <v-col cols="12" sm="6">
-                <v-select
-                  variant="solo"
-                  v-model="item.educacion"
-                  label="Educacion"
-                  :items="[
-                    'Primaria',
-                    'Secundaria',
-                    'Terciario',
-                    'Universitario',
-                  ]"
-                ></v-select
-              ></v-col>
+              <v-col cols="12" sm="12">
+                <h3 class="titulo-educacion">Titulo a fin al cargo</h3>
+              </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
                   variant="solo"
@@ -387,19 +468,201 @@ const removeFormation = index => {
               <v-divider></v-divider>
             </v-row>
           </div>
+        </v-form>
+      </v-window-item>
+      <v-window-item :value="4">
+        <v-form
+          ref="form"
+          v-model="validFour"
+          v-if="tabs == 4"
+          @input="validform()"
+        >
+          <div
+            class="container-formation"
+            v-for="(item, index) in arrayOtrosEstudios"
+          >
+            <div>
+              <v-btn
+                :disabled="!(user.formacion.length > 2)"
+                class="borrar_formacion "
+                @click="removeFormation(item.id_edu)"
+                icon="mdi-delete-outline"
+                color="red"
+              ></v-btn>
+              <v-row>
+                <v-col cols="12" sm="12">
+                  <h3 class="titulo-educacion">
+                    Otros Estudios Pertinentes a la funciones
+                  </h3></v-col
+                >
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.titulo"
+                    :rules="[titulo => !!titulo || 'Es requerido']"
+                    label="Titulo"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.institucion"
+                    :rules="[institucion => !!institucion || 'Es requerido']"
+                    label="Institucion"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.fecha_ingreso"
+                    label="Fecha de Egreso"
+                    min="1920-12-01"
+                    type="date"
+                    pattern="\d{4}-\d{2}-\d{2}"
+                    required
+                    :rules="[
+                      fechaDeEgreso => !!fechaDeEgreso || 'Es requerido',
+                    ]"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.dur_curso"
+                    :rules="[
+                      duracionCurso => !!duracionCurso || 'Es requerido',
+                    ]"
+                    label="Duracion curso"
+                    required
+                  ></v-text-field>
+                </v-col>
+
+                <v-divider></v-divider>
+              </v-row>
+            </div>
+          </div>
           <div>
-            <v-btn block color="green" @click="addFormacion"
+            <v-btn
+              block
+              color="green"
+              @click="addFormacion('Otros Estudios Pertinentes a la funciones')"
+              >Agregar Formacion</v-btn
+            >
+          </div>
+        </v-form>
+      </v-window-item>
+      <v-window-item :value="5">
+        <v-form
+          ref="form"
+          v-model="validThree"
+          v-if="tabs == 5"
+          @input="validform()"
+        >
+          <div
+            class="container-formation"
+            v-for="(item, index) in educacionFormal"
+          >
+            <v-select
+              v-if="item.educacion == 'Sin datos'"
+              variant="solo"
+              v-model="item.educacion"
+              label="Educacion"
+              :items="[
+                'Sin datos',
+                'Primaria',
+                'Secundaria',
+                'Terciario',
+                'Universitario',
+              ]"
+              @update:modelValue="ifEsNinguno"
+            ></v-select>
+            <div v-if="item.educacion !== 'Sin datos'">
+              <v-btn
+                :disabled="!(educacionFormal.length > 1)"
+                class="borrar_formacion"
+                @click="removeEducationFormal(item.id_edu)"
+                icon="mdi-delete-outline"
+                color="red"
+              ></v-btn>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-select
+                    variant="solo"
+                    v-model="item.educacion"
+                    label="Educacion"
+                    :items="[
+                      'Sin datos',
+                      'Primaria',
+                      'Secundaria',
+                      'Terciario',
+                      'Universitario',
+                    ]"
+                    @update:modelValue="ifEsNinguno"
+                  ></v-select
+                ></v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.titulo"
+                    :rules="[titulo => !!titulo || 'Es requerido']"
+                    label="Titulo"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.institucion"
+                    :rules="[institucion => !!institucion || 'Es requerido']"
+                    label="Institucion"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.fecha_ingreso"
+                    label="Fecha de Egreso"
+                    min="1920-12-01"
+                    type="date"
+                    pattern="\d{4}-\d{2}-\d{2}"
+                    required
+                    :rules="[
+                      fechaDeEgreso => !!fechaDeEgreso || 'Es requerido',
+                    ]"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    variant="solo"
+                    v-model="item.dur_curso"
+                    :rules="[
+                      duracionCurso => !!duracionCurso || 'Es requerido',
+                    ]"
+                    label="Duracion curso"
+                    required
+                  ></v-text-field>
+                </v-col>
+
+                <v-divider></v-divider>
+              </v-row>
+            </div>
+          </div>
+          <div v-if="educacionFormal[0].educacion !== 'Sin datos'">
+            <v-btn block color="green" @click="addEducacionFormal()"
               >Agregar Formacion</v-btn
             >
           </div>
         </v-form>
       </v-window-item>
 
-      <v-window-item :value="4">
+      <v-window-item :value="6">
         <v-form
           ref="form"
           v-model="validFour"
-          v-if="tabs == 4"
+          v-if="tabs == 6"
           @input="validform()"
         >
           <v-row>
@@ -515,7 +778,7 @@ const removeFormation = index => {
       </v-window-item>
     </v-window>
 
-    <div class="mt-4 d-flex justify-space-between" v-if="tabs < 5">
+    <div class="mt-4 d-flex justify-space-between" v-if="tabs < 7">
       <v-btn @click="blackForm()" :disabled="tabs == 1 ? true : false"
         >Atras</v-btn
       >
@@ -541,7 +804,7 @@ const removeFormation = index => {
   position: absolute;
   z-index: 2;
   right: 0;
-  bottom: 50px;
+  bottom: 30px;
   padding: 10px;
 }
 </style>
@@ -556,5 +819,9 @@ const removeFormation = index => {
 } */
 .quillWrapper {
   background: white;
+}
+.titulo-educacion {
+  color: black;
+  text-align: center;
 }
 </style>

@@ -22,6 +22,10 @@ const exportToPDF = () => {
   }); */
   Anexo1();
 };
+
+const createTest = () => {
+  createPdfAnexoV(result.value, concurso)
+}
 const path = useRouter();
 </script>
 
@@ -75,7 +79,7 @@ const path = useRouter();
             <v-btn
               color="blue-grey"
               prepend-icon="mdi-cloud-upload"
-              @click="createPdfAnexoV(result.value, concurso )"
+              @click="createTest"
             >
               Descarga
             </v-btn>
