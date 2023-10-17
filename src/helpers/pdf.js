@@ -282,11 +282,11 @@ function createPdfAnexoV(response, concurso) {
               formatDate(e?.fecha_ingreso),
       ],
 
-      [
+      /* [
         `cantidad de años cursados y cantidad de
           materias)`,
         e?.dur_curso,
-      ],
+      ], */
     ];
     doc.autoTable({
       startY: 170,
@@ -321,18 +321,18 @@ function createPdfAnexoV(response, concurso) {
   let formacion = educacionFormal.flatMap((formation, index) => {
     let data = [
       [`${index + 1}.- TÍTULO`, formation.titulo],
-      [`EDUCACIÓN`, formation.educacion],
+      /* [`EDUCACIÓN`, formation.educacion], */
       [`INSTITUCIÓN`, formation.institucion],
       [`FECHA DE EGRESO`, formatDate(formation.fecha_ingreso)],
     ];
     return data;
   });
 
-  var rowsEducacion = [
+  /* var rowsEducacion = [
     [`1.- TÍTULO`, response?.educacion],
     [`INSTITUCIÓN`, response?.institucion],
     [`FECHA DE EGRESO`, formatDate(response?.fecha_ingreso)],
-  ];
+  ]; */
   doc.autoTable({
     startY: 50,
     head: columnsEducacion,
@@ -365,10 +365,10 @@ function createPdfAnexoV(response, concurso) {
   );
   let formacionPertinentes = otrosEstudios.flatMap((formation, index) => {
     let data = [
-      [`${index + 1}.- TÍTULO`, formation.titulo],
-      [`EDUCACIÓN`, formation.educacion],
-      [`INSTITUCIÓN`, formation.institucion],
-      [`FECHA DE EGRESO`, formatDate(formation?.fecha_ingreso)],
+      [`${index + 1}.-INSTITUCIÓN`, formation.institucion],
+      [`DURACIÓN DE LOS ESTUDIOS`, formation.dur_curso],
+      [`FECHA DE EGRESO`, formatDate(formation?.fecha_ingreso)],      
+      [`TÍTULO`, formation.titulo],
     ];
     return data;
   });
@@ -446,6 +446,7 @@ function createPdfAnexoV(response, concurso) {
 
     [`CATEGORÍA`, response?.categoria],
     [`PERÍODO DE DESEMPEÑO`, response?.per_desempe_o],
+    [`AGRUPAMIENTO`, response?.agrupamiento],
     [
       `PERSONAL A CARGO (si corresponde,
             cantidad y agrupamiento)`,
@@ -482,8 +483,8 @@ function createPdfAnexoV(response, concurso) {
   ];
   var rowsAntecedentesLaborales = [
     [
-      response?.antec_laborales
-        ? response?.antec_laborales
+      response?.otros_antecedente_laborales
+        ? response?.otros_antecedente_laborales
         : `.................................................................................................................................
         ................................................................................................................................
         ................................................................................................................................
