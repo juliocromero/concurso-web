@@ -221,7 +221,13 @@ const tipeEducation = index => {
     "Universitario",
   ];
   if (index == 0) {
-    return ["Sin datos", "Primaria", "Secundaria", "Terciario", "Universitario"];
+    return [
+      "Sin datos",
+      "Primaria",
+      "Secundaria",
+      "Terciario",
+      "Universitario",
+    ];
   }
   return types;
 };
@@ -484,7 +490,7 @@ const ifEsNinguno = value => {
             <div>
               <v-btn
                 :disabled="!(user.formacion.length > 2)"
-                class="borrar_formacion "
+                class="borrar_formacion"
                 @click="removeFormation(item.id_edu)"
                 icon="mdi-delete-outline"
                 color="red"
@@ -761,8 +767,8 @@ const ifEsNinguno = value => {
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
+            <v-col cols="12" sm="12">
+              <v-textarea
                 variant="solo"
                 v-model="user.otros_antecedente_laborales"
                 :rules="[
@@ -771,7 +777,7 @@ const ifEsNinguno = value => {
                 ]"
                 label="Otros antecedentes laborales"
                 required
-              ></v-text-field>
+              ></v-textarea>
             </v-col>
           </v-row>
         </v-form>

@@ -53,7 +53,7 @@ function createPdfAnexoIII(response, concurso) {
       { content: `CONCURSO N° ${concurso?.numero} `, colSpan: 1, styles: {} },
       { content: `Exp. N° ${concurso?.expediente}`, colSpan: 1, styles: {} },
       {
-        content: `D. SAD o RR N° ${concurso?.id_dependencia}`,
+        content: `${concurso?.num_acto_adminstrativo}`,
         colSpan: 0,
         styles: {},
       },
@@ -95,98 +95,114 @@ function createPdfAnexoIV(response, concurso) {
   doc.addImage(Logo_UNSAM, "png", 10, 22, 50, 10);
   doc.line(10, 35, 200, 35);
   doc.setTextColor("#6a99c0");
-  doc.setFontSize(9);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
   doc.text("ANEXO IV.2 – RESOLUCIÓN N°885/2021", 10, 40);
   doc.setTextColor("black");
   doc.text("DECLARACIÓN JURADA", 105, 50, { align: "center" });
-  doc.setFontSize(9);
-  doc.text("Por la presente declaro bajo juramento que:", 10, 60);
+  doc.setFontSize(10);
+  doc.text("Por la presente declaro bajo juramento que:", 50, 60, );
   doc.text(
     "NO he incurrido en actos de fuerza contra el orden institucional y el sistema",
-    10,
-    65
+    50,
+    65,
+    
   );
   doc.text(
     "democrático y/o en violaciones a los derechos humanos y/o terrorismo de Estado; aún",
-    10,
+    25,
     70
+    
   );
   doc.text(
     "cuando me haya beneficiado por indulto o condonación de penas",
-    10,
-    75
+    25,
+    75,
+    
   );
 
   doc.text(
     "NO he sido condenado/a por delito doloso, hasta el cumplimiento de la pena",
-    10,
-    90
+    50,
+    90,
+    
   );
   doc.text(
     "privativa de la libertad o el término previsto para la prescripción de la pena.",
-    10,
-    95
+    25,
+    95,
+    
   );
 
   doc.text(
     "NO he sido condenado/a por delito en perjuicio de cualquier Institución",
-    10,
-    105
+    50,
+    105,
+    
   );
   doc.text(
     "Universitaria o de la Administración Pública Nacional, provincial o municipal, sus entes",
-    10,
-    110
+    25,
+    110,
+    
   );
-  doc.text("descentralizados o figuras afines.", 10, 115);
+  doc.text("descentralizados o figuras afines.", 25, 115,);
 
   doc.text(
     "NO me encuentro inhabilitado/a para el ejercicio de cargos públicos.",
-    10,
-    125
+    50,
+    125,
+    
   );
 
   doc.text(
     "NO me encuentro exonerado/a o declarado/a cesante de cualquier organismo",
-    10,
-    135
+    50,
+    135,
+    
   );
   doc.text(
     "de los poderes públicos nacionales, provinciales o municipales, sus entes descentralizados",
-    10,
-    140
+    25,
+    140,
+    
   );
-  doc.text("o figuras afines.", 10, 145);
+  doc.text("o figuras afines.", 25, 145, );
 
   doc.text(
     "Que he tomado conocimiento de las normas que rigen el presente llamado,",
-    10,
-    155
+    50,
+    155,
+    
   );
   doc.text(
     "como así también las correspondientes a la UNIVERSIDAD y a la actividad No Docente.",
-    10,
-    160
+    25,
+    160,
+    
   );
 
   doc.text(
     "Cualquier modificación de los datos consignados serán informados antes de la",
-    10,
-    170
+    25,
+    170,
+    
   );
-  doc.text("entrevista con los Jurados y la prueba de oposición.", 10, 175);
+  doc.text("entrevista con los Jurados y la prueba de oposición.", 25, 175, );
 
   doc.text(
     "Todos los datos consignados en las hojas de ........ a ........... son veraces y exactos.",
-    10,
-    185
+    50,
+    185,
+    
   );
   doc.text(
     "Me notifico que cualquier falsedad, ocultamiento y omisión dará motivo a la exclusión directa.",
-    10,
-    190
+    25,
+    190,
+    
   );
-  doc.text("de esta inscripción.", 10, 195);
+  doc.text("de esta inscripción.", 25, 195, );
 
   doc.save("Anexo_IV.pdf");
 }
@@ -401,7 +417,7 @@ function createPdfAnexoV(response, concurso) {
   }) */
   
 
-  var columnsOtrosEstudios = [
+  /* var columnsOtrosEstudios = [
     [
       {
         content: `3- OTROS ESTUDIOS EN GENERAL`,
@@ -421,7 +437,7 @@ function createPdfAnexoV(response, concurso) {
     head: columnsOtrosEstudios,
     body: rowsOtrosEstudios,
     theme: "grid",
-  });
+  }); */
 
   var columnsAntecedentesLaborales = [
     [
@@ -445,8 +461,8 @@ function createPdfAnexoV(response, concurso) {
     [`CARGO OCUPADO`, response?.cargo_ocupado],
 
     [`CATEGORÍA`, response?.categoria],
-    [`PERÍODO DE DESEMPEÑO`, response?.per_desempe_o],
     [`AGRUPAMIENTO`, response?.agrupamiento],
+    [`PERÍODO DE DESEMPEÑO`, response?.per_desempe_o],    
     [
       `PERSONAL A CARGO (si corresponde,
             cantidad y agrupamiento)`,
