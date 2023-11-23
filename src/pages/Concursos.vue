@@ -5,14 +5,19 @@ import { createPdfAnexoIII, createPdfAnexoIV, createPdfAnexoV } from "../helpers
 import jsonConcurso from '../../pdfprueba.json'
 
 
-/* function enviar(){
-  createPdfAnexoV(jsonConcurso.data, jsonConcurso.concurso)
-} */
+//  function enviar(){
+//   createPdfAnexoV(jsonConcurso.data, jsonConcurso.concurso)
+// } 
+
+// function enviarCentral(){
+//   createPdfAnexoIV(jsonConcurso.data, jsonConcurso.concurso)
+// } 
 
 </script>
 
 <template>
-  <!-- <v-btn @click="enviar()">enviar</v-btn> -->
+  <!-- <v-btn @click="enviar()">enviar</v-btn>
+  <v-btn @click="enviarCentral()">enviar centrar</v-btn> -->
   <ConcursoContainer />
 </template>
 
